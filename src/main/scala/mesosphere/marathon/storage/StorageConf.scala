@@ -15,7 +15,7 @@ trait StorageConf extends ZookeeperConf with BackupConf {
 
   lazy val storeCache = toggle(
     "store_cache",
-    default = Some(true),
+    default = Some(false),
     noshort = true,
     descrYes = "(Default) Enable an in-memory cache for the storage layer.",
     descrNo = "Disable the in-memory cache for the storage layer. ",
