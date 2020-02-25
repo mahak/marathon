@@ -94,7 +94,7 @@ class InstanceOpFactoryImpl(
       case matches: ResourceMatchResponse.Match =>
         val instanceId = scheduledInstance.instanceId
         val taskIds = if (scheduledInstance.tasksMap.nonEmpty) {
-          scheduledInstance.tasksMap.keysIterator.map(Task.Id.nextIncarnationFor).to[Seq]
+          scheduledInstance.tasksMap.keysIterator.map(Task.Id.nextIncarnationFor).to(Seq)
         } else {
           pod.containers.map { container => Task.Id(instanceId, Some(container)) }
         }
@@ -277,7 +277,7 @@ class InstanceOpFactoryImpl(
         // one. The used function will increment the attempt counter if it exists, of append a 1 to denote the first attempt
         // in version 1.5.
         val taskIds: Seq[Task.Id] = if (reservedInstance.tasksMap.nonEmpty) {
-          reservedInstance.tasksMap.keysIterator.map(Task.Id.nextIncarnationFor).to[Seq]
+          reservedInstance.tasksMap.keysIterator.map(Task.Id.nextIncarnationFor).to(Seq)
         } else {
           Seq(Task.Id(reservedInstance.instanceId))
         }
@@ -302,7 +302,7 @@ class InstanceOpFactoryImpl(
 
         val instanceId = reservedInstance.instanceId
         val taskIds = if (reservedInstance.tasksMap.nonEmpty) {
-          reservedInstance.tasksMap.keys.to[Seq]
+          reservedInstance.tasksMap.keys.to(Seq)
         } else {
           pod.containers.map { container =>
             Task.Id(reservedInstance.instanceId, Some(container))

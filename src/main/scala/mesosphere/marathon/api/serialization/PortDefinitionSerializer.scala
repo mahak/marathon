@@ -13,7 +13,7 @@ object PortDefinitionSerializer {
 
   private def toProto(portDefinition: PortDefinition, split: Boolean): Seq[mesos.Protos.Port] = {
     val protocols: Seq[String] = if (split) {
-      portDefinition.protocol.split(',').to[Seq]
+      portDefinition.protocol.split(',').to(Seq)
     } else {
       Seq(portDefinition.protocol)
     }

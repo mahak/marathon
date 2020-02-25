@@ -139,7 +139,7 @@ class InstanceStateTest extends UnitTest with TableDrivenPropertyChecks {
     val id = AbsolutePathId("/test")
     val clock = new SettableClock()
 
-    def tasks(statuses: Condition*): Map[Task.Id, Task] = tasks(statuses.to[Seq])
+    def tasks(statuses: Condition*): Map[Task.Id, Task] = tasks(statuses.to(Seq))
 
     def tasks(statuses: Seq[Condition]): Map[Task.Id, Task] = {
       statuses.map { status =>

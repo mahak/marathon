@@ -169,7 +169,7 @@ object InstanceTracker {
 
     def isEmpty: Boolean = instanceMap.isEmpty
     def contains(instanceId: Instance.Id): Boolean = instanceMap.contains(instanceId)
-    def instances: Seq[Instance] = instanceMap.values.to[Seq]
+    def instances: Seq[Instance] = instanceMap.values.to(Seq)
 
     private[tracker] def withInstance(instance: Instance): SpecInstances =
       copy(instanceMap = instanceMap + (instance.instanceId -> instance))

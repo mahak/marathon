@@ -149,14 +149,14 @@ class TasksResource @Inject() (
             case (appId, instances) => taskKiller.kill(appId, _ => instances, wipe)
           })).flatten
         val killedTasks = killedInstances.flatMap { i => EnrichedTask.fromInstance(i).map(_.toRaml) }
-        ok(raml.TaskList(killedTasks.to[Seq]))
+        ok(raml.TaskList(killedTasks.to(Seq)))
       }
 
       val maybeInstances: Iterable[Option[Instance]] = await(Future.sequence(tasksIdToAppId.view
         .map { case (taskId, _) => instanceTracker.instancesBySpec.map(_.instance(taskId)) }))
       val tasksByAppId: Map[AbsolutePathId, Seq[Instance]] = maybeInstances.flatten
         .groupBy(instance => instance.instanceId.runSpecId)
-        .map { case (appId, instances) => appId -> instances.to[Seq] }(collection.breakOut)
+        .map { case (appId, instances) => appId -> instances.to(Seq) }(collection.breakOut)
       val response =
         if (scale) scaleAppWithKill(tasksByAppId)
         else doKillTasks(tasksByAppId)

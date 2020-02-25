@@ -125,7 +125,7 @@ class InstanceTest extends UnitTest with TableDrivenPropertyChecks {
     val clock = new SettableClock()
 
     val agentInfo = Instance.AgentInfo("", None, None, None, Nil)
-    def tasks(statuses: Condition*): Map[Task.Id, Task] = tasks(statuses.to[Seq])
+    def tasks(statuses: Condition*): Map[Task.Id, Task] = tasks(statuses.to(Seq))
     def tasks(statuses: Seq[Condition]): Map[Task.Id, Task] =
       statuses.map { status =>
         val instanceId = Instance.Id.forRunSpec(id)

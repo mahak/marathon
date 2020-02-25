@@ -349,8 +349,8 @@ private[impl] class OfferMatcherManagerActor private (
     metrics.currentOffersMetric.setValue(offerQueues.size.toLong)
     logger.info(s"Finished processing ${data.offer.getId.getValue} from ${data.offer.getHostname}. " +
       s"Matched ${data.ops.size} ops after ${data.matchPasses} passes. " +
-      s"First 10: ${ResourceUtil.displayResources(data.offer.getResourcesList.to[Seq], 10)}")
-    logger.debug(s"First 1000 offers: ${ResourceUtil.displayResources(data.offer.getResourcesList.to[Seq], 1000)}.")
+      s"First 10: ${ResourceUtil.displayResources(data.offer.getResourcesList.to(Seq), 10)}")
+    logger.debug(s"First 1000 offers: ${ResourceUtil.displayResources(data.offer.getResourcesList.to(Seq), 1000)}.")
   }
 
   def completeWithNoMatch(reason: String, offer: Offer, promise: Promise[MatchedInstanceOps], resendThisOffer: Boolean): Unit = {

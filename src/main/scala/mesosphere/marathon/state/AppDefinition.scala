@@ -268,7 +268,7 @@ case class AppDefinition(
     // until the deprecation cycle is complete.
     val portDefinitions =
       if (proto.getPortsCount > 0) PortDefinitions(proto.getPortsList.map(_.intValue)(collection.breakOut): _*)
-      else proto.getPortDefinitionsList.map(PortDefinitionSerializer.fromProto).to[Seq]
+      else proto.getPortDefinitionsList.map(PortDefinitionSerializer.fromProto).to(Seq)
 
     val unreachableStrategy =
       if (proto.hasUnreachableStrategy)

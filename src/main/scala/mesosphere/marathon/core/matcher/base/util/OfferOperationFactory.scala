@@ -78,7 +78,7 @@ class OfferOperationFactory(
         .setType(Mesos.Offer.Operation.Type.RESERVE)
         .setReserve(reserve)
         .build()
-    }.to[Seq]
+    }.to(Seq)
   }
 
   def createVolumes(
@@ -140,6 +140,6 @@ class OfferOperationFactory(
         .setType(Mesos.Offer.Operation.Type.CREATE)
         .setCreate(create)
         .build()
-    }.to[Seq]
+    }.to(Seq)
   }
 }

@@ -92,7 +92,7 @@ case class DeploymentStepInfo(
     stepIndex: Int,
     readinessChecks: Map[Task.Id, ReadinessCheckResult] = Map.empty) {
   lazy val readinessChecksByApp: Map[AbsolutePathId, Seq[ReadinessCheckResult]] = {
-    readinessChecks.values.groupBy(_.taskId.runSpecId).map { case (k, v) => k -> v.to[Seq] }.withDefaultValue(Seq.empty)
+    readinessChecks.values.groupBy(_.taskId.runSpecId).map { case (k, v) => k -> v.to(Seq) }.withDefaultValue(Seq.empty)
   }
 }
 
@@ -272,7 +272,7 @@ object DeploymentPlan {
         }
       }
 
-      DeploymentStep(actions.to[Seq])
+      DeploymentStep(actions.to(Seq))
     }(collection.breakOut)
   }
 

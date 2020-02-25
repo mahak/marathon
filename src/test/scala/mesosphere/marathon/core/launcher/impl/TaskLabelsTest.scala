@@ -59,7 +59,7 @@ class TaskLabelsTest extends UnitTest {
       MarathonTestHelper.makeBasicOffer(
         reservation = Some(TaskLabels.labelsForTask(frameworkId, reservationId)),
         role = "test"
-      ).getResourcesList.to[Seq]
+      ).getResourcesList.to(Seq)
     }
 
     val labeledResources = labelResourcesFor(frameworkId)

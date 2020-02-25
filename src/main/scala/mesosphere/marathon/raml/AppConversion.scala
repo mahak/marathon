@@ -3,10 +3,10 @@ package raml
 
 import mesosphere.marathon.Protos.ResidencyDefinition
 import mesosphere.marathon.state._
-import mesosphere.marathon.stream.Implicits._
 import mesosphere.mesos.protos.Implicits._
 
 import scala.concurrent.duration._
+import scala.jdk.CollectionConverters._
 
 trait AppConversion extends DefaultConversions with CheckConversion with ConstraintConversion with EnvVarConversion with HealthCheckConversion
   with NetworkConversion with ReadinessConversions with SecretConversion with VolumeConversion
@@ -23,7 +23,7 @@ trait AppConversion extends DefaultConversions with CheckConversion with Constra
   }
 
   implicit val versionInfoWrites: Writes[state.VersionInfo, Option[VersionInfo]] = Writes {
-    case state.VersionInfo.FullVersionInfo(_, scale, config) => Some(VersionInfo(scale.toOffsetDateTime, config.toOffsetDateTime))
+    case state.VersionInfo.FullVersionInfo(_, scale, config) => ??? /*Some(VersionInfo(scale.toOffsetDateTime, config.toOffsetDateTime)) TODO wat */
     case state.VersionInfo.OnlyVersion(_) => None
     case state.VersionInfo.NoVersion => None
   }
@@ -293,7 +293,7 @@ trait AppConversion extends DefaultConversions with CheckConversion with Constra
         case x if x.hasDiscoveryInfo && x.getDiscoveryInfo.getPortsCount > 0 => x.getDiscoveryInfo.toRaml
       }.orElse(IpAddress.DefaultDiscovery),
       groups = ip.whenOrElse(_.getGroupsCount > 0, _.getGroupsList.to[Set], IpAddress.DefaultGroups),
-      labels = ip.whenOrElse(_.getLabelsCount > 0, _.getLabelsList.to[Seq].fromProto, IpAddress.DefaultLabels),
+      labels = ip.whenOrElse(_.getLabelsCount > 0, _.getLabelsList.to(Seq).fromProto, IpAddress.DefaultLabels),
       networkName = ip.when(_.hasNetworkName, _.getNetworkName).orElse(IpAddress.DefaultNetworkName)
     )
   }
@@ -331,7 +331,7 @@ trait AppConversion extends DefaultConversions with CheckConversion with Constra
     val app = App(
       id = service.getId,
       acceptedResourceRoles = if (service.hasAcceptedResourceRoles && service.getAcceptedResourceRoles.getRoleCount > 0) Option(service.getAcceptedResourceRoles.getRoleList.to[Set]) else App.DefaultAcceptedResourceRoles,
-      args = if (service.hasCmd && service.getCmd.getArgumentsCount > 0) service.getCmd.getArgumentsList.to[Seq] else App.DefaultArgs,
+      args = if (service.hasCmd && service.getCmd.getArgumentsCount > 0) service.getCmd.getArgumentsList.to(Seq) else App.DefaultArgs,
       backoffFactor = service.whenOrElse(_.hasBackoffFactor, _.getBackoffFactor, App.DefaultBackoffFactor),
       backoffSeconds = service.whenOrElse(_.hasBackoff, b => (b.getBackoff / 1000L).toInt, App.DefaultBackoffSeconds),
       cmd = if (service.hasCmd && service.getCmd.getArgumentsCount == 0 && service.getCmd.hasValue) Option(service.getCmd.getValue) else App.DefaultCmd,
@@ -340,7 +340,7 @@ trait AppConversion extends DefaultConversions with CheckConversion with Constra
       cpus = resourcesMap.getOrElse(Resource.CPUS, App.DefaultCpus),
       dependencies = service.whenOrElse(_.getDependenciesCount > 0, _.getDependenciesList.to[Set], App.DefaultDependencies),
       disk = resourcesMap.getOrElse(Resource.DISK, App.DefaultDisk),
-      env = service.whenOrElse(_.hasCmd, s => (s.getCmd.getEnvironment.getVariablesList.to[Seq], s.getEnvVarReferencesList.to[Seq]).toRaml, App.DefaultEnv),
+      env = service.whenOrElse(_.hasCmd, s => (s.getCmd.getEnvironment.getVariablesList.to(Seq), s.getEnvVarReferencesList.to(Seq)).toRaml, App.DefaultEnv),
       executor = service.whenOrElse(_.hasExecutor, _.getExecutor, App.DefaultExecutor),
       fetch = if (service.hasCmd && service.getCmd.getUrisCount > 0) service.getCmd.getUrisList.toRaml else App.DefaultFetch,
       healthChecks = service.whenOrElse(_.getHealthChecksCount > 0, _.getHealthChecksList.toRaml.to[Set], App.DefaultHealthChecks),

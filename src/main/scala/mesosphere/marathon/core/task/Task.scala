@@ -490,7 +490,7 @@ object Tasks {
     * See [[mesosphere.marathon.core.appinfo.EnrichedTask.singleFromInstance()]] for an example.
     */
   def unapplySeq(iter: Map[Task.Id, Task]): Option[Seq[Task]] = {
-    if (iter.nonEmpty) Some(iter.values.to[Seq])
+    if (iter.nonEmpty) Some(iter.values.to(Seq))
     else None
   }
 }

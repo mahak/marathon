@@ -301,13 +301,13 @@ trait Validation {
     def collectViolation(violation: Violation, parents: Path): Seq[ConstraintViolation] = {
       violation match {
         case RuleViolation(_, constraint, path) => Seq(ConstraintViolation(mkPath(parents ++ path), constraint))
-        case GroupViolation(_, _, children, path) => children.to[Seq].flatMap(collectViolation(_, parents ++ path))
+        case GroupViolation(_, _, children, path) => children.to(Seq).flatMap(collectViolation(_, parents ++ path))
       }
     }
     result match {
       case Success => Seq.empty
       case Failure(violations) =>
-        violations.to[Seq].flatMap(collectViolation(_, Nil))
+        violations.to(Seq).flatMap(collectViolation(_, Nil))
     }
   }
 }

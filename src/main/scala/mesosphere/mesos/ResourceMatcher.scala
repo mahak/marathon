@@ -144,7 +144,7 @@ object ResourceMatcher extends StrictLogging {
     localRegion: Option[Region] = None,
     reservedInstances: Seq[Instance] = Seq.empty)(implicit clock: Clock): ResourceMatchResponse = {
 
-    val groupedResources: Map[Role, Seq[Protos.Resource]] = offer.getResourcesList.groupBy(_.getName).map { case (k, v) => k -> v.to[Seq] }
+    val groupedResources: Map[Role, Seq[Protos.Resource]] = offer.getResourcesList.groupBy(_.getName).map { case (k, v) => k -> v.to(Seq) }
 
     val scalarResourceMatch = matchScalarResource(groupedResources, selector) _
     val diskResourceMatch = matchDiskResource(groupedResources, selector) _
@@ -294,7 +294,7 @@ object ResourceMatcher extends StrictLogging {
 
     resourceMatchOpt match {
       case Some(resourceMatch) => ResourceMatchResponse.Match(resourceMatch)
-      case None => ResourceMatchResponse.NoMatch(noOfferMatchReasons.to[Seq])
+      case None => ResourceMatchResponse.NoMatch(noOfferMatchReasons.to(Seq))
     }
   }
 
@@ -477,7 +477,7 @@ object ResourceMatcher extends StrictLogging {
       (scratchDiskRequest ++ volumesWithMounts.map(Right(_)).toList).groupBy {
         case Left(_) => DiskType.Root
         case Right(vm) => vm.volume.persistent.`type`
-      }.map { case (k, v) => k -> v.to[Seq] }
+      }.map { case (k, v) => k -> v.to(Seq) }
 
     requestedResourcesByType.keys.map { diskType =>
       val withBiggestRequestsFirst =

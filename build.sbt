@@ -11,12 +11,11 @@ resolvers ++= loadM2Resolvers(sLog.value)
 
 resolvers += Resolver.sonatypeRepo("snapshots")
 
-addCompilerPlugin("org.psywerx.hairyfotr" %% "linter" % "0.1.17")
 addCompilerPlugin(scalafixSemanticdb)
 
-val silencerVersion = "1.1"
-addCompilerPlugin("com.github.ghik" %% "silencer-plugin" % silencerVersion)
-libraryDependencies += "com.github.ghik" %% "silencer-lib" % silencerVersion % Provided
+val silencerVersion = "1.6.0"
+addCompilerPlugin("com.github.ghik" % "silencer-plugin" % silencerVersion cross CrossVersion.full)
+libraryDependencies += "com.github.ghik" % "silencer-lib" % silencerVersion % Provided cross CrossVersion.full
 
 lazy val formatSettings = Seq(
   ScalariformKeys.preferences := FormattingPreferences()
@@ -79,7 +78,7 @@ val pbSettings = ProtobufPlugin.projectSettings ++ Seq(
 lazy val commonSettings = Seq(
   autoCompilerPlugins := true,
   organization := "mesosphere.marathon",
-  scalaVersion := "2.12.10",
+  scalaVersion := "2.13.1",
   crossScalaVersions := Seq(scalaVersion.value),
   scalacOptions in Compile ++= Seq(
     "-encoding", "UTF-8",
@@ -89,19 +88,10 @@ lazy val commonSettings = Seq(
     "-unchecked",
     "-Xfuture",
     "-Xlint",
-    //FIXME: CORE-977 and MESOS-7368 are filed and need to be resolved to re-enable this
-    // "-Xfatal-warnings",
     "-Yno-adapted-args",
     "-Yrangepos",
     "-Ywarn-numeric-widen",
-    //"-Ywarn-dead-code", We should turn this one on soon
-    "-Ywarn-inaccessible",
-    "-Ywarn-infer-any",
-    "-Ywarn-nullary-override",
-    "-Ywarn-nullary-unit",
-    "-Ywarn-unused-import",
-    "-Ywarn-unused:-locals,imports",
-    //"-Ywarn-value-discard", We should turn this one on soon.
+    "-Ywarn-unused:-locals,imports"
   ),
   // Don't need any linting, etc for docs, so gain a small amount of build time there.
   scalacOptions in (Compile, doc) := Seq("-encoding", "UTF-8", "-deprecation", "-feature", "-Xfuture"),
@@ -201,7 +191,7 @@ lazy val ammonite = (project in file("./tools/repl-server"))
   .settings(formatSettings: _*)
   .settings(
     mainClass in Compile := Some("ammoniterepl.Main"),
-    libraryDependencies += "com.lihaoyi" % "ammonite-sshd" % "1.5.0" cross CrossVersion.full
+    libraryDependencies += "com.lihaoyi" % "ammonite-sshd" % "2.0.4" cross CrossVersion.full
   )
   .dependsOn(marathon)
 

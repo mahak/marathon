@@ -99,7 +99,7 @@ object InstanceOp {
             .setType(MesosProtos.Offer.Operation.Type.DESTROY)
             .setDestroy(destroyOp)
             .build()
-        }.to[Seq]
+        }.to(Seq)
       }
 
       val maybeUnreserve: Seq[MesosProtos.Offer.Operation] =
@@ -116,7 +116,7 @@ object InstanceOp {
               .setType(MesosProtos.Offer.Operation.Type.UNRESERVE)
               .setUnreserve(unreserveOp)
               .build()
-          }.to[Seq]
+          }.to(Seq)
         } else Seq.empty
 
       maybeDestroyVolumes ++ maybeUnreserve

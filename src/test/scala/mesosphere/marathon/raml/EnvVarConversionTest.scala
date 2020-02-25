@@ -17,7 +17,7 @@ class EnvVarConversionTest extends UnitTest {
           val sd: Protos.ServiceDefinition = sdf(this)
           val converted = sd.whenOrElse(
             _.hasCmd,
-            s => (s.getCmd.getEnvironment.getVariablesList.to[Seq], s.getEnvVarReferencesList.to[Seq]).toRaml,
+            s => (s.getCmd.getEnvironment.getVariablesList.to(Seq), s.getEnvVarReferencesList.to(Seq)).toRaml,
             App.DefaultEnv)
           converted should be(expected)
         }

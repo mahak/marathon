@@ -224,7 +224,7 @@ object ResourceUtil extends StrictLogging {
       case MesosProtos.Value.Type.SCALAR => s"$resourceName ${resource.getScalar.getValue}"
       case MesosProtos.Value.Type.RANGES =>
         s"$resourceName ${
-          val ranges = resource.getRanges.getRangeList.to[Seq]
+          val ranges = resource.getRanges.getRangeList.to(Seq)
           if (ranges.size > maxRanges)
             s"${rangesToString(ranges.take(maxRanges))} ... (${ranges.size - maxRanges} more)"
           else

@@ -484,7 +484,7 @@ object MarathonTestHelper {
           case _ => Docker(image = "busybox")
         }
 
-        app.copy(container = Some(docker), networks = networks.to[Seq])
+        app.copy(container = Some(docker), networks = networks.to(Seq))
       }
 
       def withPortMappings(newPortMappings: Seq[PortMapping]): AppDefinition = {

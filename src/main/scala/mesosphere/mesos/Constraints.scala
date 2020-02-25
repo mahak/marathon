@@ -53,13 +53,13 @@ object Constraints extends StrictLogging {
     case Value.Type.TEXT =>
       attribute.getText.getValue
     case Value.Type.RANGES =>
-      val s = attribute.getRanges.getRangeList.to[Seq]
+      val s = attribute.getRanges.getRangeList.to(Seq)
         .sortWith(_.getBegin < _.getBegin)
         .map(r => s"${r.getBegin.toString}-${r.getEnd.toString}")
         .mkString(",")
       s"[$s]"
     case Value.Type.SET =>
-      val s = attribute.getSet.getItemList.to[Seq].sorted.mkString(",")
+      val s = attribute.getSet.getItemList.to(Seq).sorted.mkString(",")
       s"{$s}"
   }
 
@@ -245,7 +245,7 @@ object Constraints extends StrictLogging {
     }.mkString("Selected Constraint diff changed:\n", "\n", "\n")
     logger.info(s"$instanceDesc$distDesc")
 
-    toKillInstances.values.to[Seq]
+    toKillInstances.values.to(Seq)
   }
 
   /**

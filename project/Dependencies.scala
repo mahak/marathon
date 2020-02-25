@@ -87,7 +87,6 @@ object Dependencies {
     Test.akkaTestKit % "test",
     Test.akkaHttpTestKit % "test",
     Test.junit % "test",
-    Test.scalacheck % "test",
     Test.usiTestUtils % "test"
   ) ++ Curator.all
     ++ DropwizardMetrics.all
@@ -107,18 +106,18 @@ object Dependencies {
 object Dependency {
   object V {
     // runtime deps versions
-    val Akka = "2.5.23"
-    val AkkaHttp = "10.0.15"
-    val Alpakka  = "0.14"
+    val Akka = "2.6.3"
+    val AkkaHttp = "10.1.11"
+    val Alpakka  = "1.1.2"
     val ApacheCommonsCompress = "1.13"
     val ApacheCommonsIO = "2.6"
-    val AsyncAwait = "0.9.7"
+    val AsyncAwait = "0.10.0"
     val Aws = "1.11.243"
-    val Diffson = "2.2.2"
+    val Diffson = "4.0.2"
     val Guava = "20.0"
     val Guice = "4.1.0"
     val JGraphT = "0.9.3"
-    val Jackson = "2.9.5"
+    val Jackson = "2.10.2"
     val Java8Compat = "0.9.0"
     val Jersey = "2.27"
     val Jetty = "9.4.8.v20171121"
@@ -129,15 +128,15 @@ object Dependency {
     val MarathonUI = "1.3.2"
     val Mesos = "1.9.0"
     val Mustache = "0.9.0"
-    val PlayJson = "2.6.7"
+    val PlayJson = "2.8.1"
     val Raven = "8.0.3"
-    val ScalaLogging = "3.7.2"
+    val ScalaLogging = "3.9.2"
     val ScalaPb = "0.6.6"
-    val Scallop = "3.1.2"
+    val Scallop = "3.3.2"
     val ServletApi = "2.5"
     val Slf4j = "1.7.21"
     val UUIDGenerator = "3.1.4"
-    val WixAccord = "0.7.1"
+    val WixAccord = "0.7.5"
 
     // Version of Mesos to use when building docker image or testing packages
     val MesosDebian = "1.9.0-2.0.1"
@@ -148,9 +147,8 @@ object Dependency {
     val JUnit = "4.12"
     val JUnitBenchmarks = "0.7.2"
     val Mockito = "1.10.19"
-    val ScalaCheck = "1.13.5"
-    val ScalaTest = "3.0.4"
-    val UsiTestUtil = "0.1.31"
+    val ScalaTest = "3.1.1"
+    val UsiTestUtil = "0.1.33-745d9bb-SNAPSHOT"
   }
 
   val excludeMortbayJetty = ExclusionRule(organization = "org.mortbay.jetty")
@@ -158,7 +156,7 @@ object Dependency {
 
   val akkaActor = "com.typesafe.akka" %% "akka-actor" % V.Akka
   val akkaHttp = "com.typesafe.akka" %% "akka-http" % V.AkkaHttp
-  val akkaHttpPlayJson = "de.heikoseeberger" %% "akka-http-play-json" % "1.18.1"
+  val akkaHttpPlayJson = "de.heikoseeberger" %% "akka-http-play-json" % "1.31.0"
   val akkaSlf4j = "com.typesafe.akka" %% "akka-slf4j" % V.Akka
   val akkaStream = "com.typesafe.akka" %% "akka-stream" % V.Akka
   val alpakkaCodes = "com.lightbend.akka" %% "akka-stream-alpakka-simple-codecs" % V.Alpakka
@@ -260,7 +258,6 @@ object Dependency {
     val akkaHttpTestKit = "com.typesafe.akka" %% "akka-http-testkit" % V.AkkaHttp
     val diffson = "org.gnieh" %% "diffson-play-json" % V.Diffson
     val junit = "junit" % "junit" % V.JUnit
-    val scalacheck = "org.scalacheck" %% "scalacheck" % V.ScalaCheck
-    val usiTestUtils = ("com.mesosphere.usi" % "test-utils" % V.UsiTestUtil).excludeAll(excludeZk35)
+    val usiTestUtils = ("com.mesosphere.usi" %% "test-utils" % V.UsiTestUtil).excludeAll(excludeZk35)
   }
 }

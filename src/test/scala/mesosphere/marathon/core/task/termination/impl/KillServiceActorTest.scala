@@ -193,7 +193,7 @@ class KillServiceActorTest extends AkkaUnitTest with StrictLogging with Eventual
         }(collection.breakOut)
 
         val promise = Promise[Done]()
-        actor ! KillServiceActor.KillInstances(instances.values.to[Seq], promise)
+        actor ! KillServiceActor.KillInstances(instances.values.to(Seq), promise)
 
         val captor: ArgumentCaptor[mesos.Protos.TaskID] = ArgumentCaptor.forClass(classOf[mesos.Protos.TaskID])
         verify(f.driver, timeout(f.killConfig.killRetryTimeout.toMillis.toInt * 2).times(5)).killTask(captor.capture())

@@ -157,7 +157,7 @@ trait DeploymentFormats {
     Format(
       Reads.of[Seq[Int]].map(_.map(_.toByte).toArray),
       Writes { xs =>
-        JsArray(xs.to[Seq].map(b => JsNumber(b.toInt)))
+        JsArray(xs.to(Seq).map(b => JsNumber(b.toInt)))
       }
     )
 

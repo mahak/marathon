@@ -43,7 +43,7 @@ private[reconcile] class OfferMatcherReconciler(instanceTracker: InstanceTracker
       // TODO(PODS): don't use resident resources yet. Once they're needed it's not clear whether the labels
       // will continue to be task IDs, or pod instance IDs
       offer.getResourcesList.groupBy(TaskLabels.instanceIdForResource(frameworkId, _)).collect {
-        case (Some(instanceId), resources) => instanceId -> resources.to[Seq]
+        case (Some(instanceId), resources) => instanceId -> resources.to(Seq)
       }
     }
 

@@ -38,7 +38,7 @@ object PortDiscovery {
     implicit object ContainerPortMappingReader extends PortMappingReader[PortMapping] {
       def name(portMapping: PortMapping) = portMapping.name
       def labels(portMapping: PortMapping) = portMapping.labels
-      def protocols(portMapping: PortMapping) = portMapping.protocol.split(',').to[Seq]
+      def protocols(portMapping: PortMapping) = portMapping.protocol.split(',').to(Seq)
       def networkNames(portMapping: PortMapping) = portMapping.networkNames
       def containerPort(portMapping: PortMapping) = Some(portMapping.containerPort)
       def hostPort(portMapping: PortMapping) = portMapping.hostPort
@@ -47,7 +47,7 @@ object PortDiscovery {
     implicit object PortDefinitionReader extends PortMappingReader[PortDefinition] {
       def name(portDefinition: PortDefinition) = portDefinition.name
       def labels(portDefinition: PortDefinition) = portDefinition.labels
-      def protocols(portDefinition: PortDefinition) = portDefinition.protocol.split(',').to[Seq]
+      def protocols(portDefinition: PortDefinition) = portDefinition.protocol.split(',').to(Seq)
       def networkNames(portDefinition: PortDefinition) = Nil
       def containerPort(portDefinition: PortDefinition) = None
       def hostPort(portDefinition: PortDefinition) = Some(portDefinition.port)

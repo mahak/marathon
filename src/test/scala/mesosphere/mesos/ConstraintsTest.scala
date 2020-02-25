@@ -704,7 +704,7 @@ class ConstraintsTest extends UnitTest {
     * http://mesos.apache.org/documentation/latest/attributes-resources/
     */
   private def parseAttrs(expression: String): Seq[Protos.Attribute] =
-    expression.split(';').filter(_.nonEmpty).map(parseAttr(_)).to[Seq]
+    expression.split(';').filter(_.nonEmpty).map(parseAttr(_)).to(Seq)
 
   private def makeOffer(hostname: String, attributes: String = "", domainInfo: Option[DomainInfo] = None) = {
     val builder = Offer.newBuilder

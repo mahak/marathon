@@ -128,7 +128,7 @@ trait NetworkConversion {
     Network(
       name = if (net.hasName) Option(net.getName) else Network.DefaultName,
       mode = mode,
-      labels = if (net.getLabelsCount > 0) net.getLabelsList.to[Seq].fromProto else Network.DefaultLabels
+      labels = if (net.getLabelsCount > 0) net.getLabelsList.to(Seq).fromProto else Network.DefaultLabels
     )
   }
 }

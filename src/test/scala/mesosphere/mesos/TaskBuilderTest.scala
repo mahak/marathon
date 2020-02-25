@@ -719,7 +719,7 @@ class TaskBuilderTest extends UnitTest {
 
       val (taskInfo, networkInfo) = task.get
       val rangeResourceOpt = taskInfo.getResourcesList.find(r => r.getName == Resource.PORTS)
-      val ranges = rangeResourceOpt.fold(Seq.empty[MesosProtos.Value.Range])(_.getRanges.getRangeList.to[Seq])
+      val ranges = rangeResourceOpt.fold(Seq.empty[MesosProtos.Value.Range])(_.getRanges.getRangeList.to(Seq))
       val rangePorts = ranges.flatMap(r => r.getBegin to r.getEnd).toSet
       assert(2 == rangePorts.size)
       assert(2 == networkInfo.hostPorts.size)

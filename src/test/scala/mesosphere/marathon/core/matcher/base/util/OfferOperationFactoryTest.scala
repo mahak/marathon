@@ -39,7 +39,7 @@ class OfferOperationFactoryTest extends UnitTest {
       val task = MarathonTestHelper.makeOneCPUTask(f.taskId)
 
       When("We create a reserve operation")
-      val operations = factory.reserve("role", f.reservationLabels, task.getResourcesList.to[Seq])
+      val operations = factory.reserve("role", f.reservationLabels, task.getResourcesList.to(Seq))
 
       Then("The operation is as expected")
       operations.length shouldEqual 1

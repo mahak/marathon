@@ -51,7 +51,7 @@ class OfferMatcherReconcilerTest extends UnitTest with GroupCreation {
           InstanceOp.UnreserveAndDestroyVolumes(
             InstanceUpdateOperation.ForceExpunge(taskId.instanceId),
             oldInstance = None,
-            resources = offer.getResourcesList.to[Seq]
+            resources = offer.getResourcesList.to(Seq)
           )
         )
 
@@ -81,7 +81,7 @@ class OfferMatcherReconcilerTest extends UnitTest with GroupCreation {
         InstanceOp.UnreserveAndDestroyVolumes(
           InstanceUpdateOperation.ForceExpunge(taskId.instanceId),
           oldInstance = None,
-          resources = offer.getResourcesList.to[Seq]
+          resources = offer.getResourcesList.to(Seq)
         )
       )
 
@@ -111,7 +111,7 @@ class OfferMatcherReconcilerTest extends UnitTest with GroupCreation {
         InstanceOp.UnreserveAndDestroyVolumes(
           InstanceUpdateOperation.ForceExpunge(taskId.instanceId),
           oldInstance = Some(bogusInstance),
-          resources = offer.getResourcesList.to[Seq]
+          resources = offer.getResourcesList.to(Seq)
         )
       )
 

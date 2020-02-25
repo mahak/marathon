@@ -657,7 +657,7 @@ trait MarathonTest extends HealthCheckEndpoint with MarathonAppFixtures with Sca
       "status_update_event",
       _.taskStatus == kind,
       s"event status_update_event (${kinds.mkString(",")}) to arrive")
-  }.to[Seq]
+  }.to(Seq)
 
   def waitForEvent(
     kind: String,
