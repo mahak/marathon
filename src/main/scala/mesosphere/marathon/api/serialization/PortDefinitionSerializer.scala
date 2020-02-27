@@ -35,7 +35,7 @@ object PortDefinitionSerializer {
   def fromProto(proto: mesos.Protos.Port): PortDefinition = {
     val labels: Map[String, String] =
       if (proto.hasLabels)
-        proto.getLabels.getLabelsList.map { p => p.getKey -> p.getValue }(collection.breakOut)
+        proto.getLabels.getLabelsList.asScala.iterator.map { p => p.getKey -> p.getValue }.toMap
       else Map.empty[String, String]
 
     PortDefinition(

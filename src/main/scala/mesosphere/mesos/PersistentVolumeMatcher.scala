@@ -12,10 +12,10 @@ object PersistentVolumeMatcher {
     waitingInstances: Seq[Instance]): Option[VolumeMatch] = {
 
     // find all offered persistent volumes
-    val availableVolumes: Map[String, Mesos.Resource] = offer.getResourcesList.collect {
+    val availableVolumes: Map[String, Mesos.Resource] = offer.getResourcesList.asScala.iterator.collect {
       case resource: Mesos.Resource if resource.hasDisk && resource.getDisk.hasPersistence =>
         resource.getDisk.getPersistence.getId -> resource
-    }(collection.breakOut)
+    }.toSeq
 
     def resourcesForReservation(reservation: Reservation): Option[Seq[Mesos.Resource]] = {
       if (reservation.volumeIds.map(_.idString).forall(availableVolumes.contains))

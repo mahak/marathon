@@ -12,8 +12,6 @@ import mesosphere.marathon.core.pod.PodDefinition
 import org.openjdk.jmh.annotations.{Group => _, _}
 import org.openjdk.jmh.infra.Blackhole
 
-import scala.collection.breakOut
-
 @State(Scope.Benchmark)
 class GroupBenchmark {
 

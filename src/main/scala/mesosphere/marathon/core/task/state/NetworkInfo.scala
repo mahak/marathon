@@ -88,7 +88,7 @@ object NetworkInfo extends StrictLogging {
 
   def resolveIpAddresses(mesosStatus: mesos.Protos.TaskStatus): Seq[mesos.Protos.NetworkInfo.IPAddress] = {
     if (mesosStatus.hasContainerStatus && mesosStatus.getContainerStatus.getNetworkInfosCount > 0) {
-      mesosStatus.getContainerStatus.getNetworkInfosList.flatMap(_.getIpAddressesList)(collection.breakOut)
+      mesosStatus.getContainerStatus.getNetworkInfosList.asScala.iterator.flatMap(_.getIpAddressesList.asScala).toSeq
     } else {
       Nil
     }
@@ -137,7 +137,7 @@ object NetworkInfo extends StrictLogging {
               s"failed to align remaining allocated host ports $ports with remaining declared port mappings $mappings in app ${app.id}")
         }
       }
-      gen(hostPorts.to[List], container.portMappings.to[List], Nil).reverse
+      gen(hostPorts.to(List), container.portMappings.to(List), Nil).reverse
     }
 
     def fromPortDefinitions: Seq[PortAssignment] =

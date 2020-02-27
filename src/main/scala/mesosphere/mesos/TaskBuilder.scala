@@ -282,9 +282,9 @@ object TaskBuilder {
         MARATHON_APP_RESOURCE_DISK -> Some(runSpec.resources.disk.toString),
         MARATHON_APP_RESOURCE_GPUS -> Some(runSpec.resources.gpus.toString),
         MARATHON_APP_ENFORCE_GROUP_ROLE -> enforceRole.map(_.toString.toUpperCase())
-      ).collect {
+      ).iterator.collect {
           case (key, Some(value)) => key -> value
-        }(collection.breakOut)
+        }.toSeq
       envVars ++ EnvironmentHelper.labelsToEnvVars(runSpec.labels)
     }
   }

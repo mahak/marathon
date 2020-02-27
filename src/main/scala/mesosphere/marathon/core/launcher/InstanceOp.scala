@@ -34,7 +34,7 @@ object InstanceOp {
       offerOperations: Seq[MesosProtos.Offer.Operation]) extends InstanceOp {
 
     def applyToOffer(offer: MesosProtos.Offer): MesosProtos.Offer = {
-      ResourceUtil.consumeResourcesFromOffer(offer, taskInfo.getResourcesList.toSeq)
+      ResourceUtil.consumeResourcesFromOffer(offer, taskInfo.getResourcesList.asScala.toSeq)
     }
   }
 
@@ -47,8 +47,8 @@ object InstanceOp {
 
     override def applyToOffer(offer: MesosProtos.Offer): MesosProtos.Offer = {
       val taskResources: Seq[MesosProtos.Resource] =
-        groupInfo.getTasksList.flatMap(_.getResourcesList)(collection.breakOut)
-      val executorResources: Seq[MesosProtos.Resource] = executorInfo.getResourcesList.toSeq
+        groupInfo.getTasksList.asScala.iterator.flatMap(_.getResourcesList.asScala).toSeq
+      val executorResources: Seq[MesosProtos.Resource] = executorInfo.getResourcesList.asScala.toSeq
       ResourceUtil.consumeResourcesFromOffer(offer, taskResources ++ executorResources)
     }
   }

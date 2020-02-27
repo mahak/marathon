@@ -123,7 +123,7 @@ class SystemResource @Inject() (val config: MarathonConf, val metricsModule: Met
       withAuthorization(ViewResource, SystemConfig) {
         LoggerFactory.getILoggerFactory match {
           case lc: LoggerContext =>
-            ok(jsonString(lc.getLoggerList.map { logger =>
+            ok(jsonString(lc.getLoggerList.asScala.map { logger =>
               logger.getName -> Option(logger.getLevel).map(_.levelStr).getOrElse(logger.getEffectiveLevel.levelStr + " (inherited)")
             }.toMap))
         }

@@ -159,10 +159,10 @@ class KillServiceActorTest extends AkkaUnitTest with StrictLogging with Eventual
 
     "killing instances is throttled (single requests)" should {
       "issue 5 kills immediately to the driver" in withActor(defaultConfig) { (f, actor) =>
-        val instances: Map[Instance.Id, Instance] = (1 to 10).map { index =>
+        val instances: Map[Instance.Id, Instance] = (1 to 10).iterator.map { index =>
           val instance = f.mockInstance(f.runSpecId, f.clock.now(), mesos.Protos.TaskState.TASK_RUNNING)
           instance.instanceId -> instance
-        }(collection.breakOut)
+        }.toSeq
 
         instances.valuesIterator.foreach { instance =>
           actor ! KillServiceActor.KillInstances(Seq(instance), Promise[Done]())
@@ -187,10 +187,10 @@ class KillServiceActorTest extends AkkaUnitTest with StrictLogging with Eventual
     "killing instances is throttled (batch request)" should {
       "issue 5 kills immediately to the driver" in withActor(defaultConfig) { (f, actor) =>
 
-        val instances: Map[Instance.Id, Instance] = (1 to 10).map { index =>
+        val instances: Map[Instance.Id, Instance] = (1 to 10).iterator.map { index =>
           val instance = f.mockInstance(f.runSpecId, f.clock.now(), mesos.Protos.TaskState.TASK_RUNNING)
           instance.instanceId -> instance
-        }(collection.breakOut)
+        }.toSeq
 
         val promise = Promise[Done]()
         actor ! KillServiceActor.KillInstances(instances.values.to(Seq), promise)

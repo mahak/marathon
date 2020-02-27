@@ -59,7 +59,7 @@ class InstancesLoaderImplTest extends AkkaUnitTest {
         state.Instance.fromCoreInstance(app2Instance1)
       )
 
-      f.instanceRepository.ids() returns Source(instances.map(_.instanceId)(collection.breakOut))
+      f.instanceRepository.ids() returns Source(instances.iterator.map(_.instanceId).toSeq)
       for (instance <- instances) {
         f.instanceRepository.get(instance.instanceId) returns Future.successful(Some(instance))
       }
@@ -100,7 +100,7 @@ class InstancesLoaderImplTest extends AkkaUnitTest {
         state.Instance.fromCoreInstance(app2Instance1)
       )
 
-      f.instanceRepository.ids() returns Source(instances.map(_.instanceId)(collection.breakOut))
+      f.instanceRepository.ids() returns Source(instances.iterator.map(_.instanceId).toSeq)
       for (instance <- instances) {
         f.instanceRepository.get(instance.instanceId) returns Future.successful(Some(instance))
       }
@@ -135,7 +135,7 @@ class InstancesLoaderImplTest extends AkkaUnitTest {
         state.Instance.fromCoreInstance(app2Instance1)
       )
 
-      f.instanceRepository.ids() returns Source(instances.map(_.instanceId)(collection.breakOut))
+      f.instanceRepository.ids() returns Source(instances.iterator.map(_.instanceId).toSeq)
       for (instance <- instances) {
         f.instanceRepository.get(instance.instanceId) returns Future.successful(Some(instance))
       }

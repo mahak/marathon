@@ -74,7 +74,7 @@ object PortDiscovery {
     if (!networks.isHostModeNetworking) {
       // The run spec uses bridge and user modes with portMappings, use them to create the Port messages.
       // Just like apps, we prefer to generate network-scope=host when there's a hostPort available.
-      mappings.flatMap { mp =>
+      mappings.iterator.flatMap { mp =>
         (r.containerPort(mp), r.hostPort(mp)) match {
           case (Some(_), Some(hostPort)) =>
             r.protocols(mp).map { protocol =>
@@ -99,7 +99,7 @@ object PortDiscovery {
             throw new IllegalStateException(
               s"unexpected combination of network mode and endpoint ports for ${mp.getClass.getSimpleName} $mp")
         }
-      }(collection.breakOut)
+      }.toSeq
     } else {
       // network-scope is assumed to be host, no need for an additional scope label here.
       for {

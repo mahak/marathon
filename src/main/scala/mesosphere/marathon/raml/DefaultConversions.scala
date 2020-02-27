@@ -8,8 +8,6 @@ import mesosphere.marathon.stream.Implicits._
 import org.apache.mesos.{Protos => mesos}
 import play.api.libs.json.JsString
 
-import scala.collection.breakOut
-
 /**
   * All conversions for standard scala types.
   */
@@ -32,7 +30,7 @@ trait DefaultConversions {
   }
 
   implicit def javaListToSeqConversion[A, B](implicit writer: Writes[A, B]): Writes[java.util.List[A], Seq[B]] = Writes { list =>
-    list.map(writer.write)(breakOut)
+    list.iterator.map(writer.write).toSeq
   }
 
   implicit def setConversion[A, B](implicit writer: Writes[A, B]): Writes[Set[A], Set[B]] = Writes { set =>

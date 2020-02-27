@@ -39,12 +39,12 @@ private[externalvolume] case object DVDIProvider extends ExternalVolumeProvider 
       // and trimming the values
       opts.filterKeys{ k =>
         k.startsWith(prefix) && !ignore.contains(k.toLowerCase)
-      }.map {
+      }.iterator.map {
         case (k, v) => Parameter.newBuilder
           .setKey(k.substring(prefix.length))
           .setValue(v.trim())
           .build
-      }(collection.breakOut)
+      }.toSeq
     }
 
     def applyOptions(dv: MesosVolume.Source.DockerVolume.Builder, opts: Seq[Parameter]): Unit = {
@@ -151,7 +151,7 @@ private[impl] object DVDIProviderValidations extends ExternalVolumeValidations {
 
       /** @return a count of volume references-by-name within an app spec */
       def volumeNameCounts(app: App): Map[String, Int] =
-        namesOfMatchingVolumes(app).groupBy(identity).map { case (name, names) => name -> names.size }(collection.breakOut)
+        namesOfMatchingVolumes(app).groupBy(identity).iterator.map { case (name, names) => name -> names.size }.toMap
     }
 
     val validContainer = {
@@ -214,7 +214,7 @@ private[impl] object DVDIProviderValidations extends ExternalVolumeValidations {
 
       /** @return a count of volume references-by-name within an app spec */
       def volumeNameCounts(app: AppDefinition): Map[String, Int] =
-        namesOfMatchingVolumes(app).groupBy(identity).map { case (name, names) => name -> names.size }(collection.breakOut)
+        namesOfMatchingVolumes(app).groupBy(identity).iterator.map { case (name, names) => name -> names.size }.toMap
     }
 
     val validContainer = {

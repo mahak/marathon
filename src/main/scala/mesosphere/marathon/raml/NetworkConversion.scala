@@ -5,6 +5,7 @@ import mesosphere.marathon.core.pod
 import mesosphere.marathon.stream.Implicits._
 import mesosphere.mesos.protos.Implicits._
 import org.apache.mesos.Protos.ContainerInfo.DockerInfo.{Network => DockerNetworkMode}
+import scala.jdk.CollectionConverters._
 
 trait NetworkConversion {
 
@@ -91,7 +92,7 @@ trait NetworkConversion {
     ContainerPortMapping(
       containerPort = mapping.whenOrElse(_.hasContainerPort, _.getContainerPort, ContainerPortMapping.DefaultContainerPort),
       hostPort = mapping.when(_.hasHostPort, _.getHostPort).orElse(ContainerPortMapping.DefaultHostPort),
-      labels = mapping.whenOrElse(_.getLabelsCount > 0, _.getLabelsList.flatMap(_.fromProto)(collection.breakOut), ContainerPortMapping.DefaultLabels),
+      labels = mapping.whenOrElse(_.getLabelsCount > 0, _.getLabelsList.asScala.iterator.flatMap(_.fromProto).toMap, ContainerPortMapping.DefaultLabels),
       name = mapping.when(_.hasName, _.getName).orElse(ContainerPortMapping.DefaultName),
       protocol = mapping.when(_.hasProtocol, _.getProtocol).flatMap(NetworkProtocol.fromString).getOrElse(ContainerPortMapping.DefaultProtocol),
       servicePort = mapping.whenOrElse(_.hasServicePort, _.getServicePort, ContainerPortMapping.DefaultServicePort),
@@ -103,7 +104,7 @@ trait NetworkConversion {
     ContainerPortMapping(
       containerPort = mapping.whenOrElse(_.hasContainerPort, _.getContainerPort, ContainerPortMapping.DefaultContainerPort),
       hostPort = mapping.when(_.hasHostPort, _.getHostPort).orElse(ContainerPortMapping.DefaultHostPort),
-      labels = mapping.whenOrElse(_.getLabelsCount > 0, _.getLabelsList.flatMap(_.fromProto)(collection.breakOut), ContainerPortMapping.DefaultLabels),
+      labels = mapping.whenOrElse(_.getLabelsCount > 0, _.getLabelsList.asScala.iterator.flatMap(_.fromProto).toMap, ContainerPortMapping.DefaultLabels),
       name = mapping.when(_.hasName, _.getName).orElse(ContainerPortMapping.DefaultName),
       protocol = mapping.whenOrElse(_.hasProtocol, _.getProtocol.toRaml[NetworkProtocol], ContainerPortMapping.DefaultProtocol),
       servicePort = mapping.whenOrElse(_.hasServicePort, _.getServicePort, ContainerPortMapping.DefaultServicePort)

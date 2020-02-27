@@ -22,8 +22,8 @@ object ScalingProposition extends StrictLogging {
     val instancesGoalRunning: Map[Instance.Id, Instance] = instances
       .filter(_.state.goal == Goal.Running)
       .filter(_.state.condition != UnreachableInactive)
-      .map(instance => instance.instanceId -> instance)(collection.breakOut)
-    val toDecommissionMap: Map[Instance.Id, Instance] = toDecommission.map(instance => instance.instanceId -> instance)(collection.breakOut)
+      .iterator.map(instance => instance.instanceId -> instance).toMap
+    val toDecommissionMap: Map[Instance.Id, Instance] = toDecommission.iterator.map(instance => instance.instanceId -> instance).toMap
 
     val (sentencedAndRunningMap, notSentencedAndRunningMap) = instancesGoalRunning partition {
       case (instanceId, _) =>

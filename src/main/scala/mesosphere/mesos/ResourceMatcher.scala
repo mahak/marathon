@@ -33,7 +33,7 @@ object ResourceMatcher extends StrictLogging {
     def scalarMatch(name: String): Option[ScalarMatch] = scalarMatches.find(_.resourceName == name)
 
     def resources: Seq[Protos.Resource] =
-      scalarMatches.flatMap(_.consumedResources)(collection.breakOut) ++
+      scalarMatches.iterator.flatMap(_.consumedResources).toSeq ++
         portsMatch.resources
 
     // TODO - this assumes that volume matches are one resource to one volume, which should be correct, but may not be.
@@ -79,9 +79,9 @@ object ResourceMatcher extends StrictLogging {
       if (!resource.hasReservation || !resource.getReservation.hasLabels)
         Map.empty
       else {
-        resource.getReservation.getLabels.getLabelsList.map { label =>
+        resource.getReservation.getLabels.getLabelsList.asScala.iterator.map { label =>
           label.getKey -> label.getValue
-        }(collection.breakOut)
+        }.toSeq
       }
 
     /** Match resources with given roles that have at least the given labels */
@@ -485,7 +485,7 @@ object ResourceMatcher extends StrictLogging {
           toList.
           sortBy({ r => r.right.map(_.volume.persistent.size.toDouble).merge })(implicitly[Ordering[Double]].reverse)
 
-      val resources: List[Protos.Resource] = resourcesByType(diskType).filterAs(selector(_))(collection.breakOut)
+      val resources: List[Protos.Resource] = resourcesByType(diskType).iterator.filterAs(selector(_)).toSeq
 
       if (diskType == DiskType.Mount) {
         findMountMatches(

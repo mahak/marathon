@@ -75,13 +75,13 @@ class OfferMatcherManagerModuleTest extends AkkaUnitTest with OfferMatcherSpec {
     protected def matchTasks(offer: Offer): Seq[TaskInfo] = numberedTasks() // linter:ignore:UnusedParameter
 
     override def matchOffer(offer: Offer): Future[MatchedInstanceOps] = {
-      val opsWithSources = matchTasks(offer).map { taskInfo =>
+      val opsWithSources = matchTasks(offer).iterator.map { taskInfo =>
         val instance = TestInstanceBuilder.newBuilderWithInstanceId(F.instanceId).addTaskWithBuilder().taskFromTaskInfo(taskInfo, offer).build().getInstance()
         val task: Task = instance.appTask
         val stateOp = InstanceUpdateOperation.Provision(instance.instanceId, instance.agentInfo.get, instance.runSpec, instance.tasksMap, Timestamp.now())
         val launch = F.launch(taskInfo, stateOp)
         InstanceOpWithSource(Source, launch)
-      }(collection.breakOut)
+      }.toSeq
 
       val result = MatchedInstanceOps(offer.getId, opsWithSources)
       results :+= result

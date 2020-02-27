@@ -126,7 +126,7 @@ object InstanceTracker {
       instances.flatMap(_.tasksMap.get(id))
     }
 
-    def allInstances: Seq[Instance] = instancesMap.values.flatMap(_.instances)(collection.breakOut)
+    def allInstances: Seq[Instance] = instancesMap.values.iterator.flatMap(_.instances).toSeq
 
     private[tracker] def updateApp(appId: AbsolutePathId)(
       update: InstanceTracker.SpecInstances => InstanceTracker.SpecInstances): InstancesBySpec = {
@@ -153,7 +153,7 @@ object InstanceTracker {
         .groupBy(_.runSpecId)
         .map {
           case (appId, appInstances) =>
-            val instancesById: Map[Instance.Id, Instance] = appInstances.map(instance => instance.instanceId -> instance)(collection.breakOut)
+            val instancesById: Map[Instance.Id, Instance] = appInstances.iterator.map(instance => instance.instanceId -> instance).toMap
             appId -> SpecInstances(instancesById)
         }
     )

@@ -206,7 +206,7 @@ object Constraints extends StrictLogging {
     val distributions = runSpec.constraints.withFilter(_.getOperator == Operator.GROUP_BY).map { constraint =>
       val (_, placed) = readerForField(constraint.getField)
       val instanceGroups: Seq[Map[Instance.Id, Instance]] =
-        runningInstances.groupBy(placed).values.map(Instance.instancesById)(collection.breakOut)
+        runningInstances.groupBy(placed).values.iterator.map(Instance.instancesById).toSeq
       GroupByDistribution(constraint, instanceGroups)
     }
 
@@ -264,7 +264,7 @@ object Constraints extends StrictLogging {
         /* even distributed */
         Seq.empty
       } else {
-        updated.maxBy(_._1)._2.flatMap(_.map { case (_, instance) => instance })(collection.breakOut)
+        updated.maxBy(_._1)._2.iterator.flatMap(_.map { case (_, instance) => instance }).toSeq
       }
     }
 

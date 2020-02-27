@@ -16,7 +16,7 @@ case object BuildInfo {
     * manifests, and find the one that applies to the Marathon application jar.
     */
   private lazy val marathonManifestPath: List[java.net.URL] =
-    getClass().getClassLoader().getResources("META-INF/MANIFEST.MF").toIterator.filter { manifest =>
+    getClass().getClassLoader().getResources("META-INF/MANIFEST.MF").asScala.iterator.filter { manifest =>
       marathonJar.findFirstMatchIn(manifest.getPath).nonEmpty
     }.toList
 

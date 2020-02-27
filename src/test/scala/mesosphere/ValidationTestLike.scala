@@ -10,8 +10,6 @@ import org.scalatest._
 import org.scalatest.matchers.{BePropertyMatchResult, BePropertyMatcher, MatchResult, Matcher}
 import play.api.libs.json.{Format, JsError, Json}
 
-import scala.collection.breakOut
-
 /**
   * Provides a set of scalatest matchers for use when testing validation.
   *

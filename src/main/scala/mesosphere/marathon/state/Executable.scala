@@ -50,7 +50,7 @@ case class ArgvList(value: Seq[String]) extends Executable with MarathonState[Me
   }
 
   def mergeFromProto(proto: MesosProtos.CommandInfo): ArgvList =
-    ArgvList(value = proto.getArgumentsList.toSeq)
+    ArgvList(value = proto.getArgumentsList.asScala.toSeq)
 
   def mergeFromProto(bytes: Array[Byte]): ArgvList =
     mergeFromProto(MesosProtos.CommandInfo.parseFrom(bytes))

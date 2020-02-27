@@ -166,13 +166,13 @@ class PortsMatcher private[tasks] (
   private[this] lazy val offeredPortRanges: Seq[PortRange] = {
     offer.getResourcesList
       .withFilter(resource => resourceSelector(resource) && resource.getName == Resource.PORTS)
-      .flatMap { resource =>
+      .iterator.flatMap { resource =>
         val rangeInResource = resource.getRanges.getRangeList
         val reservation = if (resource.hasReservation) Option(resource.getReservation) else None
         rangeInResource.map { range =>
           PortRange(resource.getRole: @silent, range.getBegin.toInt, range.getEnd.toInt, reservation)
         }
-      }(collection.breakOut)
+      }.toSeq
   }
 
   private[this] def shuffledAvailablePorts: Iterator[PortWithRole] =

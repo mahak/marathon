@@ -520,7 +520,7 @@ object MarathonTestHelper {
             .build)
         }
         val taskStatus = mesosStatus(task.taskId, task.status.mesosStatus, networkInfos)
-        val ipAddresses: Seq[Mesos.NetworkInfo.IPAddress] = networkInfos.flatMap(_.getIpAddressesList)(collection.breakOut)
+        val ipAddresses: Seq[Mesos.NetworkInfo.IPAddress] = networkInfos.iterator.flatMap(_.getIpAddressesList).toSeq
         val initialNetworkInfo = core.task.state.NetworkInfo(
           hostName.getOrElse("host.some"),
           hostPorts = hostPorts,

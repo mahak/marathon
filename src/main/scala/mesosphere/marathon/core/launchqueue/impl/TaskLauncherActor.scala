@@ -217,8 +217,9 @@ private class TaskLauncherActor(
 
     case ActorOfferMatcher.MatchOffer(offer, promise) =>
       logger.info(s"Matching offer ${offer.getId.getValue} and need to launch $instancesToLaunch tasks.")
-      val reachableInstances = instanceMap.filterNotAs{
-        case (_, instance) => instance.state.condition.isLost || instance.isScheduled
+      val reachableInstances = instanceMap.filterNot {
+        case (_, instance) =>
+          instance.state.condition.isLost || instance.isScheduled
       }
       val candidateInstances = scheduledInstances.iterator
         .filter { instance => offer.getAllocationInfo.getRole == instance.role }

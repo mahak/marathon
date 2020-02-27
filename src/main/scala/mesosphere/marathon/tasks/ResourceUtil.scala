@@ -197,7 +197,7 @@ object ResourceUtil extends StrictLogging {
   def consumeResourcesFromOffer(
     offer: MesosProtos.Offer,
     usedResources: Seq[MesosProtos.Resource]): MesosProtos.Offer = {
-    val offerResources: Seq[MesosProtos.Resource] = offer.getResourcesList.toSeq
+    val offerResources: Seq[MesosProtos.Resource] = offer.getResourcesList.asScala.toSeq
     val leftOverResources = ResourceUtil.consumeResources(offerResources, usedResources)
     offer.toBuilder.clearResources().addAllResources(leftOverResources.asJava).build()
   }

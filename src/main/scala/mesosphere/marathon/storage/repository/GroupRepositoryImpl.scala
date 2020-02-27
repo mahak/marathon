@@ -91,19 +91,19 @@ case class StoredGroup(
       logger.warn(s"Group $id $version is missing pods: $summarizedMissingPods")
     }
 
-    val apps: Map[AbsolutePathId, AppDefinition] = allApps.collect {
+    val apps: Map[AbsolutePathId, AppDefinition] = allApps.iterator.collect {
       case (_, Some(app: AppDefinition)) =>
         app.id -> app
-    }(collection.breakOut)
+    }.toMap
 
-    val pods: Map[AbsolutePathId, PodDefinition] = allPods.collect {
+    val pods: Map[AbsolutePathId, PodDefinition] = allPods.iterator.collect {
       case (_, Some(pod: PodDefinition)) =>
         pod.id -> pod
-    }(collection.breakOut)
+    }.toMap
 
-    val groups: Map[AbsolutePathId, Group] = await(Future.sequence(groupFutures)).map { group =>
+    val groups: Map[AbsolutePathId, Group] = await(Future.sequence(groupFutures)).iterator.map { group =>
       group.id -> group
-    }(collection.breakOut)
+    }.toMap
 
     Group(
       id = id,
@@ -156,19 +156,19 @@ object StoredGroup {
       id = group.id,
       appIds = group.apps.map { case (id, app) => id -> app.version.toOffsetDateTime },
       podIds = group.pods.map { case (id, pod) => id -> pod.version.toOffsetDateTime },
-      storedGroups = group.groupsById.map { case (_, group) => StoredGroup(group) }(collection.breakOut),
+      storedGroups = group.groupsById.iterator.map { case (_, group) => StoredGroup(group) }.toSeq,
       dependencies = group.dependencies,
       version = group.version.toOffsetDateTime,
       enforceRole = Some(group.enforceRole))
 
   def apply(proto: Protos.GroupDefinition): StoredGroup = {
-    val apps: Map[AbsolutePathId, OffsetDateTime] = proto.getAppsList.map { appId =>
+    val apps: Map[AbsolutePathId, OffsetDateTime] = proto.getAppsList.iterator.map { appId =>
       PathId.fromSafePath(appId.getId) -> OffsetDateTime.parse(appId.getVersion, DateFormat)
-    }(collection.breakOut)
+    }.toMap
 
-    val pods: Map[AbsolutePathId, OffsetDateTime] = proto.getPodsList.map { podId =>
+    val pods: Map[AbsolutePathId, OffsetDateTime] = proto.getPodsList.iterator.map { podId =>
       PathId.fromSafePath(podId.getId) -> OffsetDateTime.parse(podId.getVersion, DateFormat)
-    }(collection.breakOut)
+    }.toMap
 
     val id = PathId.fromSafePath(proto.getId)
 
@@ -184,7 +184,7 @@ object StoredGroup {
       appIds = apps,
       podIds = pods,
       storedGroups = groups.toIndexedSeq,
-      dependencies = proto.getDependenciesList.map(PathId.fromSafePath)(collection.breakOut),
+      dependencies = proto.getDependenciesList.asScala.iterator.map(PathId.fromSafePath).toSeq,
       version = OffsetDateTime.parse(proto.getVersion, DateFormat),
       enforceRole = enforceRole
     )

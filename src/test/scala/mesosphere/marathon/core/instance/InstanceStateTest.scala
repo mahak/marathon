@@ -21,11 +21,11 @@ class InstanceStateTest extends UnitTest with TableDrivenPropertyChecks {
       val tasks: Map[Task.Id, Task] = f.tasks(Condition.Running, Condition.Running)
         .values
         .zip(startTimestamps)
-        .map {
+        .iterator.map {
           case (task, startTime) =>
             val newStatus: Task.Status = task.status.copy(startedAt = startTime)
             task.taskId -> task.copy(status = newStatus)
-        }(collection.breakOut)
+        }.toSeq
 
       val state = Instance.InstanceState.transitionTo(None, tasks, f.clock.now(), UnreachableStrategy.default(), Goal.Running)
 
@@ -50,11 +50,11 @@ class InstanceStateTest extends UnitTest with TableDrivenPropertyChecks {
       val tasks: Map[Task.Id, Task] = f.tasks(Condition.Running, Condition.Staging)
         .values
         .zip(startTimestamps)
-        .map {
+        .iterator.map {
           case (task, startTime) =>
             val newStatus: Task.Status = task.status.copy(startedAt = startTime)
             task.taskId -> task.copy(status = newStatus)
-        }(collection.breakOut)
+        }.toSeq
 
       val state = Instance.InstanceState.transitionTo(None, tasks, f.clock.now(), UnreachableStrategy.default(), Goal.Running)
 
@@ -69,11 +69,11 @@ class InstanceStateTest extends UnitTest with TableDrivenPropertyChecks {
       val tasks: Map[Task.Id, Task] = f.tasks(Condition.Running, Condition.Unreachable)
         .values
         .zip(startTimestamps)
-        .map {
+        .iterator.map {
           case (task, startTime) =>
             val newStatus: Task.Status = task.status.copy(startedAt = startTime)
             task.taskId -> task.copy(status = newStatus)
-        }(collection.breakOut)
+        }.toSeq
 
       val state = Instance.InstanceState.transitionTo(None, tasks, f.clock.now(), UnreachableStrategy.default(), Goal.Running)
 
@@ -142,13 +142,13 @@ class InstanceStateTest extends UnitTest with TableDrivenPropertyChecks {
     def tasks(statuses: Condition*): Map[Task.Id, Task] = tasks(statuses.to(Seq))
 
     def tasks(statuses: Seq[Condition]): Map[Task.Id, Task] = {
-      statuses.map { status =>
+      statuses.iterator.map { status =>
         val instanceId = Instance.Id.forRunSpec(id)
         val taskId = Task.Id(instanceId)
         val mesosStatus = MesosTaskStatusTestHelper.mesosStatus(status, taskId, Timestamp.now)
         val task = TestTaskBuilder.Helper.minimalTask(taskId, Timestamp.now(), mesosStatus, status)
         task.taskId -> task
-      }(collection.breakOut)
+      }.toSeq
     }
   }
 }

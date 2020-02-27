@@ -119,7 +119,7 @@ trait Implicits {
       case Protos.Value.Type.RANGES =>
         RangesResource(
           resource.getName,
-          resource.getRanges.getRangeList.map(rangeToCaseClass)(collection.breakOut),
+          resource.getRanges.getRangeList.asScala.iterator.map(rangeToCaseClass).toSeq,
           resource.getRole: @silent
         )
       case Protos.Value.Type.SCALAR =>
@@ -255,9 +255,9 @@ trait Implicits {
       offer.getFrameworkId,
       offer.getSlaveId,
       offer.getHostname,
-      offer.getResourcesList.map(resourceToCaseClass)(collection.breakOut),
-      offer.getAttributesList.map(attributeToCaseClass)(collection.breakOut),
-      offer.getExecutorIdsList.map(executorIDToCaseClass)(collection.breakOut)
+      offer.getResourcesList.asScala.iterator.map(resourceToCaseClass).toSeq,
+      offer.getAttributesList.asScala.iterator.map(attributeToCaseClass).toSeq,
+      offer.getExecutorIdsList.asScala.iterator.map(executorIDToCaseClass).toSeq
     )
   }
 
@@ -310,14 +310,14 @@ object Implicits extends Implicits {
       builder.build
     }
     def toProto: Seq[Protos.Label] =
-      labels.map { e => Protos.Label.newBuilder.setKey(e._1).setValue(e._2).build }(collection.breakOut)
+      labels.iterator.map { e => Protos.Label.newBuilder.setKey(e._1).setValue(e._2).build }.toSeq
   }
 
   implicit final class LabelsToMap(val labels: Protos.Labels) extends AnyVal {
     def fromProto: Map[String, String] =
-      labels.getLabelsList.collect {
+      labels.getLabelsList.asScala.iterator.collect {
         case label if label.hasKey && label.hasValue => label.getKey -> label.getValue
-      }(collection.breakOut)
+      }.toSeq
   }
 
   implicit final class LabelToTuple(val label: Protos.Label) extends AnyVal {
@@ -327,8 +327,8 @@ object Implicits extends Implicits {
 
   implicit final class LabelSeqToMap(val labels: Iterable[Protos.Label]) extends AnyVal {
     def fromProto: Map[String, String] =
-      labels.collect {
+      labels.iterator.collect {
         case label if label.hasKey && label.hasValue => label.getKey -> label.getValue
-      }(collection.breakOut)
+      }.toSeq
   }
 }

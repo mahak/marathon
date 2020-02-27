@@ -8,7 +8,6 @@ import mesosphere.marathon.state._
 import org.openjdk.jmh.annotations.{Group => _, _}
 import org.openjdk.jmh.infra.Blackhole
 
-import scala.collection.breakOut
 import scala.util.Random
 
 @State(Scope.Benchmark)

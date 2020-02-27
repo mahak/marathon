@@ -199,12 +199,12 @@ class MarathonFacade(
 
   def listAppsInBaseGroup: RestResult[List[App]] = {
     val res = result(requestFor[ITListAppsResult](Get(s"$url/v2/apps")), waitTime)
-    res.map(_.apps.filterAs(app => isInBaseGroup(app.id.toPath))(collection.breakOut))
+    res.map(_.apps.iterator.filterAs(app => isInBaseGroup(app.id.toPath)).toSeq)
   }
 
   def listAppsInBaseGroupForAppId(appId: AbsolutePathId): RestResult[List[App]] = {
     val res = result(requestFor[ITListAppsResult](Get(s"$url/v2/apps")), waitTime)
-    res.map(_.apps.filterAs(app => isInBaseGroup(app.id.toPath) && app.id.toPath == appId)(collection.breakOut))
+    res.map(_.apps.iterator.filterAs(app => isInBaseGroup(app.id.toPath) && app.id.toPath == appId).toSeq)
   }
 
   def app(id: AbsolutePathId): RestResult[ITAppDefinition] = {
@@ -481,7 +481,7 @@ class MarathonFacade(
 
   def launchQueueForAppId(appId: AbsolutePathId): RestResult[List[ITQueueItem]] = {
     val res = result(requestFor[ITLaunchQueue](Get(s"$url/v2/queue")), waitTime)
-    res.map(_.queue.filterAs(q => q.app.id.toPath == appId)(collection.breakOut))
+    res.map(_.queue.iterator.filterAs(q => q.app.id.toPath == appId).toSeq)
   }
 
   def launchQueueDelayReset(appId: AbsolutePathId): RestResult[HttpResponse] =

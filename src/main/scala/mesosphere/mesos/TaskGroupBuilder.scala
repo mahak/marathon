@@ -730,11 +730,11 @@ object TaskGroupBuilder extends StrictLogging {
 
     require(!hostPorts.flatten.contains(0), "expected that all dynamic host ports have been allocated")
 
-    val allocPortsByCTName: Seq[(String, Int)] = reqPortsByCTName.zip(hostPorts).collect {
+    val allocPortsByCTName: Seq[(String, Int)] = reqPortsByCTName.zip(hostPorts).iterator.collect {
       case ((name, Some(_)), Some(allocatedPort)) => name -> allocatedPort
-    }(collection.breakOut)
+    }.toSeq
 
-    taskIDs.map { taskId =>
+    taskIDs.iterator.map { taskId =>
       // the task level host ports are needed for fine-grained status/reporting later on
       val taskHostPorts: Seq[Int] = taskId.containerName.map { ctName =>
         allocPortsByCTName.withFilter { case (name, port) => name == ctName }.map(_._2)
@@ -742,6 +742,6 @@ object TaskGroupBuilder extends StrictLogging {
 
       val networkInfo = NetworkInfo(host, taskHostPorts, ipAddresses = Nil)
       taskId -> networkInfo
-    }(collection.breakOut)
+    }.toSeq
   }
 }

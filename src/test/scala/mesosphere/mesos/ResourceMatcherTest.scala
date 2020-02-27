@@ -1397,9 +1397,9 @@ class ResourceMatcherTest extends UnitTest with Inside with TableDrivenPropertyC
 
   val appId = AbsolutePathId("/test")
   def instance(id: String, version: Timestamp, attrs: Map[String, String]): Instance = { // linter:ignore:UnusedParameter
-    val attributes: Seq[Attribute] = attrs.map {
+    val attributes: Seq[Attribute] = attrs.iterator.map {
       case (name, v) => TextAttribute(name, v): Attribute
-    }(collection.breakOut)
+    }.toSeq
     TestInstanceBuilder.newBuilder(appId, version = version).addTaskWithBuilder().taskStaged()
       .build()
       .withAgentInfo(attributes = Some(attributes))

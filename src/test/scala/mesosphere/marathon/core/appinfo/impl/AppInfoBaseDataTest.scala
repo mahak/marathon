@@ -57,7 +57,7 @@ class AppInfoBaseDataTest extends UnitTest with GroupCreation {
 
     def fakeInstance(pod: PodDefinition): Instance = {
       val instanceId = Instance.Id.forRunSpec(pod.id)
-      val tasks: Map[Task.Id, Task] = pod.containers.map { ct =>
+      val tasks: Map[Task.Id, Task] = pod.containers.iterator.map { ct =>
         val taskId = Task.Id(instanceId, Some(ct))
         taskId -> Task(
           taskId = taskId,
@@ -68,7 +68,7 @@ class AppInfoBaseDataTest extends UnitTest with GroupCreation {
             mesosStatus = None,
             condition = Condition.Running,
             networkInfo = NetworkInfoPlaceholder()))
-      }(collection.breakOut)
+      }.toSeq
 
       Instance(
         instanceId = instanceId,
@@ -511,7 +511,7 @@ class AppInfoBaseDataTest extends UnitTest with GroupCreation {
       f.taskFailureRepository.get(pod.id) returns Future.successful(Some(taskFailure))
       val instance1 = {
         val instanceId = Instance.Id.forRunSpec(pod.id)
-        val tasks: Map[Task.Id, Task] = pod.containers.map { ct =>
+        val tasks: Map[Task.Id, Task] = pod.containers.iterator.map { ct =>
           val taskId = Task.Id(instanceId, Some(ct))
           taskId -> Task(
             taskId = taskId,
@@ -522,7 +522,7 @@ class AppInfoBaseDataTest extends UnitTest with GroupCreation {
               mesosStatus = Some(MesosTaskStatusTestHelper.unknown(taskId)),
               condition = Condition.Unknown,
               networkInfo = NetworkInfoPlaceholder()))
-        }(collection.breakOut)
+        }.toSeq
 
         Instance(
           instanceId = instanceId,

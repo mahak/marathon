@@ -135,7 +135,7 @@ object UriIO extends StrictLogging {
   }
 
   private[this] def parseParams(uri: URI): Map[String, String] = {
-    Option(uri.getQuery).getOrElse("").split("&").collect { case QueryParam(k, v) => k -> v }(collection.breakOut)
+    Option(uri.getQuery).getOrElse("").split("&").iterator.collect { case QueryParam(k, v) => k -> v }.toMap
   }
 
   private[this] object QueryParam {

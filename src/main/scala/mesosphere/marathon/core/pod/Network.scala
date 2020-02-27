@@ -54,7 +54,7 @@ object Network {
   def fromProto(net: NetworkDefinition): Option[Network] = {
     import NetworkDefinition.Mode._
 
-    def labelsFromProto: Map[String, String] = net.getLabelsList.toSeq.fromProto
+    def labelsFromProto: Map[String, String] = net.getLabelsList.asScala.toSeq.fromProto
 
     net.getMode() match {
       case UNKNOWN =>

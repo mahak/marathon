@@ -60,6 +60,7 @@ object Dependencies {
     commonsCompress % "compile", // used for tar flow
     commonsIO % "compile",
     alpakkaCodes % "compile",
+    scalaCollectionCompat % "compile",
 
     // old Chaos deps
     guava % "compile",
@@ -194,6 +195,7 @@ object Dependency {
   val mesos = "org.apache.mesos" % "mesos" % V.Mesos
   val playJson = "com.typesafe.play" %% "play-json" % V.PlayJson
   val raven = "com.getsentry.raven" % "raven-logback" % V.Raven
+  val scalaCollectionCompat = "org.scala-lang.modules" %% "scala-collection-compat" % "2.1.4"
   val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % V.ScalaLogging
   val scalaPb = "com.trueaccord.scalapb" %% "compilerplugin" % V.ScalaPb
   val scallop = "org.rogach" %% "scallop" % V.Scallop

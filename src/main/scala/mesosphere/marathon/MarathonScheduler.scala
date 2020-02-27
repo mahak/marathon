@@ -57,7 +57,7 @@ class MarathonScheduler(
   }
 
   override def resourceOffers(driver: SchedulerDriver, offers: java.util.List[Offer]): Unit = {
-    offers.foreach { offer =>
+    offers.asScala.foreach { offer =>
       val processFuture = offerProcessor.processOffer(offer)
       processFuture.onComplete {
         case scala.util.Success(_) => logger.debug(s"Finished processing offer '${offer.getId.getValue}'")
