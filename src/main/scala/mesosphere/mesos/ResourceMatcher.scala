@@ -3,22 +3,21 @@ package mesosphere.mesos
 import java.time.Clock
 
 import com.typesafe.scalalogging.StrictLogging
-import mesosphere.marathon.GpuSchedulingBehavior
 import mesosphere.marathon.core.instance.Instance
 import mesosphere.marathon.core.launcher.impl.TaskLabels
 import mesosphere.marathon.core.pod.PodDefinition
 import mesosphere.marathon.plugin.scheduler.SchedulerPlugin
+import mesosphere.marathon.{GpuSchedulingBehavior, silent}
 import mesosphere.marathon.state._
-import mesosphere.marathon.stream.Implicits._
 import mesosphere.marathon.tasks.{OfferUtil, PortsMatch, PortsMatcher, ResourceUtil}
 import mesosphere.mesos.protos.{Resource, ResourceProviderID}
 import org.apache.mesos.Protos
 import org.apache.mesos.Protos.Offer
 import org.apache.mesos.Protos.Resource.DiskInfo.Source
-import mesosphere.marathon.silent
 
 import scala.annotation.tailrec
 import scala.collection.immutable.Seq
+import scala.jdk.CollectionConverters._
 
 object ResourceMatcher extends StrictLogging {
   import ResourceUtil.RichResource
@@ -81,7 +80,7 @@ object ResourceMatcher extends StrictLogging {
       else {
         resource.getReservation.getLabels.getLabelsList.asScala.iterator.map { label =>
           label.getKey -> label.getValue
-        }.toSeq
+        }.toMap
       }
 
     /** Match resources with given roles that have at least the given labels */
@@ -144,7 +143,7 @@ object ResourceMatcher extends StrictLogging {
     localRegion: Option[Region] = None,
     reservedInstances: Seq[Instance] = Seq.empty)(implicit clock: Clock): ResourceMatchResponse = {
 
-    val groupedResources: Map[Role, Seq[Protos.Resource]] = offer.getResourcesList.groupBy(_.getName).map { case (k, v) => k -> v.to(Seq) }
+    val groupedResources: Map[Role, Seq[Protos.Resource]] = offer.getResourcesList.asScala.groupBy(_.getName).map { case (k, v) => k -> v.to(Seq) }
 
     val scalarResourceMatch = matchScalarResource(groupedResources, selector) _
     val diskResourceMatch = matchDiskResource(groupedResources, selector) _
@@ -197,7 +196,7 @@ object ResourceMatcher extends StrictLogging {
     // Current mesos implementation will only send resources with one distinct role assigned.
     // If not a single resource (matching the resource selector) was found, a NoOfferMatchReason.UnmatchedRole
     // will be added to noOfferMatchReasons
-    if (!offer.getResourcesList.exists(resource => selector.apply(resource))) {
+    if (!offer.getResourcesList.asScala.exists(resource => selector.apply(resource))) {
       noOfferMatchReasons += NoOfferMatchReason.UnfulfilledRole
     }
 
@@ -485,7 +484,7 @@ object ResourceMatcher extends StrictLogging {
           toList.
           sortBy({ r => r.right.map(_.volume.persistent.size.toDouble).merge })(implicitly[Ordering[Double]].reverse)
 
-      val resources: List[Protos.Resource] = resourcesByType(diskType).iterator.filterAs(selector(_)).toSeq
+      val resources: List[Protos.Resource] = resourcesByType(diskType).iterator.filter(selector(_)).toList
 
       if (diskType == DiskType.Mount) {
         findMountMatches(

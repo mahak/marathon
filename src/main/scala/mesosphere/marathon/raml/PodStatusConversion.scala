@@ -8,7 +8,8 @@ import mesosphere.marathon.core.health.{MesosCommandHealthCheck, MesosHttpHealth
 import mesosphere.marathon.core.pod.{MesosContainer, PodDefinition}
 import mesosphere.marathon.core.task
 import mesosphere.marathon.raml.LocalVolumeConversion.localVolumeIdWrites
-import mesosphere.marathon.stream.Implicits._
+
+import scala.jdk.CollectionConverters._
 
 trait PodStatusConversion {
 
@@ -110,10 +111,10 @@ trait PodStatusConversion {
       mesosStatus.getContainerStatus.getNetworkInfosList.asScala.iterator.map { networkInfo =>
         NetworkStatus(
           name = if (networkInfo.hasName) Some(networkInfo.getName) else None,
-          addresses = networkInfo.getIpAddressesList
+          addresses = networkInfo.getIpAddressesList.asScala
             .iterator.filter(_.hasIpAddress).map(_.getIpAddress).toSeq
         )
-      }.toSeq
+      }.toList
     }
   }.groupBy(_.name).values.iterator.map { toMerge =>
     val networkStatus: NetworkStatus = toMerge.reduceLeft { (merged, single) =>

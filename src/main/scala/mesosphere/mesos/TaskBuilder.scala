@@ -10,7 +10,6 @@ import mesosphere.marathon.core.task.Task
 import mesosphere.marathon.plugin.task.RunSpecTaskProcessor
 import mesosphere.marathon.state.Container.Docker
 import mesosphere.marathon.state._
-import mesosphere.marathon.stream.Implicits._
 import mesosphere.mesos.ResourceMatcher.ResourceMatch
 import mesosphere.mesos.protos.Implicits._
 import mesosphere.mesos.protos.ScalarResource
@@ -18,6 +17,7 @@ import org.apache.mesos.Protos.Environment._
 import org.apache.mesos.Protos._
 
 import scala.collection.immutable.Seq
+import scala.jdk.CollectionConverters._
 
 class TaskBuilder(
     runSpec: AppDefinition,
@@ -284,7 +284,7 @@ object TaskBuilder {
         MARATHON_APP_ENFORCE_GROUP_ROLE -> enforceRole.map(_.toString.toUpperCase())
       ).iterator.collect {
           case (key, Some(value)) => key -> value
-        }.toSeq
+        }.toMap
       envVars ++ EnvironmentHelper.labelsToEnvVars(runSpec.labels)
     }
   }

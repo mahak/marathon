@@ -7,7 +7,7 @@ package raml
 object Environment {
   def apply(kv: (String, String)*): Map[String, EnvVarValueOrSecret] =
     kv.iterator.map { case (k, v) => k -> EnvVarValue(v) }.toMap
-  def apply(env: Map[String, String]): Map[String, EnvVarValueOrSecret] = env.map { case (k, v) => k -> (EnvVarValue(v))
+  def apply(env: Map[String, String]): Map[String, EnvVarValueOrSecret] = env.map { case (k, v) => k -> (EnvVarValue(v)) }
 
   object Implicits {
     implicit class WithSecrets(val env: Map[String, EnvVarValueOrSecret]) extends AnyVal {

@@ -162,11 +162,11 @@ object StoredGroup {
       enforceRole = Some(group.enforceRole))
 
   def apply(proto: Protos.GroupDefinition): StoredGroup = {
-    val apps: Map[AbsolutePathId, OffsetDateTime] = proto.getAppsList.iterator.map { appId =>
+    val apps: Map[AbsolutePathId, OffsetDateTime] = proto.getAppsList.asScala.iterator.map { appId =>
       PathId.fromSafePath(appId.getId) -> OffsetDateTime.parse(appId.getVersion, DateFormat)
     }.toMap
 
-    val pods: Map[AbsolutePathId, OffsetDateTime] = proto.getPodsList.iterator.map { podId =>
+    val pods: Map[AbsolutePathId, OffsetDateTime] = proto.getPodsList.asScala.iterator.map { podId =>
       PathId.fromSafePath(podId.getId) -> OffsetDateTime.parse(podId.getVersion, DateFormat)
     }.toMap
 
@@ -177,14 +177,14 @@ object StoredGroup {
       if (proto.hasEnforceRole()) Some(proto.getEnforceRole)
       else None
 
-    val groups = proto.getGroupsList.map(StoredGroup(_))
+    val groups = proto.getGroupsList.asScala.map(StoredGroup(_))
 
     StoredGroup(
       id = id,
       appIds = apps,
       podIds = pods,
       storedGroups = groups.toIndexedSeq,
-      dependencies = proto.getDependenciesList.asScala.iterator.map(PathId.fromSafePath).toSeq,
+      dependencies = proto.getDependenciesList.asScala.iterator.map(PathId.fromSafePath).toSet,
       version = OffsetDateTime.parse(proto.getVersion, DateFormat),
       enforceRole = enforceRole
     )

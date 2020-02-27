@@ -2,7 +2,6 @@ package mesosphere.marathon
 package raml
 
 import mesosphere.marathon.core.pod
-import mesosphere.marathon.stream.Implicits._
 import mesosphere.mesos.protos.Implicits._
 import org.apache.mesos.Protos.ContainerInfo.DockerInfo.{Network => DockerNetworkMode}
 import scala.jdk.CollectionConverters._
@@ -96,7 +95,7 @@ trait NetworkConversion {
       name = mapping.when(_.hasName, _.getName).orElse(ContainerPortMapping.DefaultName),
       protocol = mapping.when(_.hasProtocol, _.getProtocol).flatMap(NetworkProtocol.fromString).getOrElse(ContainerPortMapping.DefaultProtocol),
       servicePort = mapping.whenOrElse(_.hasServicePort, _.getServicePort, ContainerPortMapping.DefaultServicePort),
-      networkNames = mapping.whenOrElse(_.getNetworkNamesList.size > 0, _.getNetworkNamesList.toList, ContainerPortMapping.DefaultNetworkNames)
+      networkNames = mapping.whenOrElse(_.getNetworkNamesList.size > 0, _.getNetworkNamesList.asScala.toList, ContainerPortMapping.DefaultNetworkNames)
     )
   }
 
@@ -129,7 +128,7 @@ trait NetworkConversion {
     Network(
       name = if (net.hasName) Option(net.getName) else Network.DefaultName,
       mode = mode,
-      labels = if (net.getLabelsCount > 0) net.getLabelsList.to(Seq).fromProto else Network.DefaultLabels
+      labels = if (net.getLabelsCount > 0) net.getLabelsList.asScala.to(Seq).fromProto else Network.DefaultLabels
     )
   }
 }

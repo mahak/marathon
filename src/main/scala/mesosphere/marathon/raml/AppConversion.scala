@@ -2,7 +2,7 @@ package mesosphere.marathon
 package raml
 
 import mesosphere.marathon.Protos.ResidencyDefinition
-import mesosphere.marathon.state.{VersionInfo => StateVersionInfo, PortDefinition => StatePortDefinition, _}
+import mesosphere.marathon.state.{AbsolutePathId, Timestamp}
 import mesosphere.mesos.protos.Implicits._
 import mesosphere.marathon.stream.Implicits.toRichIterable
 
@@ -15,11 +15,11 @@ trait AppConversion extends DefaultConversions with CheckConversion with Constra
 
   import AppConversion._
 
-  implicit val artifactWrites: Writes[FetchUri, Artifact] = Writes { fetch =>
+  implicit val artifactWrites: Writes[state.FetchUri, Artifact] = Writes { fetch =>
     Artifact(fetch.uri, fetch.extract, fetch.executable, fetch.cache, fetch.outputFile)
   }
 
-  implicit val upgradeStrategyWrites: Writes[state.UpgradeStrategy, UpgradeStrategy] = Writes { strategy =>
+  implicit val upgradeStrategyWrites: Writes[state.UpgradeStrategy, raml.UpgradeStrategy] = Writes { strategy =>
     UpgradeStrategy(strategy.maximumOverCapacity, strategy.minimumHealthCapacity)
   }
 
@@ -29,7 +29,7 @@ trait AppConversion extends DefaultConversions with CheckConversion with Constra
     case state.VersionInfo.NoVersion => None
   }
 
-  implicit val appWriter: Writes[AppDefinition, App] = Writes { app =>
+  implicit val appWriter: Writes[state.AppDefinition, App] = Writes { app =>
     // we explicitly do not write ports, uris, ipAddress because they are deprecated fields
     App(
       id = app.id.toString,
@@ -103,8 +103,8 @@ trait AppConversion extends DefaultConversions with CheckConversion with Constra
     }
   }
 
-  implicit val fetchUriReader: Reads[Artifact, FetchUri] = Reads { artifact =>
-    FetchUri(
+  implicit val fetchUriReader: Reads[Artifact, state.FetchUri] = Reads { artifact =>
+    state.FetchUri(
       uri = artifact.uri,
       extract = artifact.extract,
       executable = artifact.executable,
@@ -113,7 +113,7 @@ trait AppConversion extends DefaultConversions with CheckConversion with Constra
     )
   }
 
-  implicit val upgradeStrategyRamlReader: Reads[UpgradeStrategy, state.UpgradeStrategy] = Reads { us =>
+  implicit val upgradeStrategyRamlReader: Reads[raml.UpgradeStrategy, state.UpgradeStrategy] = Reads { us =>
     state.UpgradeStrategy(
       maximumOverCapacity = us.maximumOverCapacity,
       minimumHealthCapacity = us.minimumHealthCapacity
@@ -124,14 +124,14 @@ trait AppConversion extends DefaultConversions with CheckConversion with Constra
     * Generate an AppDefinition from an App RAML. Note: App.versionInfo is ignored, the resulting AppDefinition
     * has a `versionInfo` constructed from `OnlyVersion(app.version)`.
     */
-  implicit val appRamlReader: Reads[App, AppDefinition] = Reads[App, AppDefinition] { app =>
+  implicit val appRamlReader: Reads[App, state.AppDefinition] = Reads[App, state.AppDefinition] { app =>
     val selectedStrategy: state.UpgradeStrategy = UpgradeStrategyConverter(
       app.upgradeStrategy.map(Raml.fromRaml(_)),
       hasPersistentVolumes = app.container.exists(_.volumes.existsAn[AppPersistentVolume]),
       hasExternalVolumes = app.container.exists(_.volumes.existsAn[AppExternalVolume])
     )
 
-    val backoffStrategy = BackoffStrategy(
+    val backoffStrategy = state.BackoffStrategy(
       backoff = app.backoffSeconds.seconds,
       maxLaunchDelay = app.maxLaunchDelaySeconds.seconds,
       factor = app.backoffFactor
@@ -141,7 +141,7 @@ trait AppConversion extends DefaultConversions with CheckConversion with Constra
 
     val role = app.role.getOrElse(throw new IllegalArgumentException("Failed to convert raml.App, no role provided. This is a bug in AppNormalization."))
 
-    val result: AppDefinition = AppDefinition(
+    val result: state.AppDefinition = state.AppDefinition(
       id = AbsolutePathId(app.id),
       cmd = app.cmd,
       args = app.args,
@@ -163,11 +163,11 @@ trait AppConversion extends DefaultConversions with CheckConversion with Constra
       dependencies = app.dependencies.iterator.map(AbsolutePathId(_)).toSet,
       upgradeStrategy = selectedStrategy,
       labels = app.labels,
-      acceptedResourceRoles = app.acceptedResourceRoles.getOrElse(AppDefinition.DefaultAcceptedResourceRoles),
+      acceptedResourceRoles = app.acceptedResourceRoles.getOrElse(state.AppDefinition.DefaultAcceptedResourceRoles),
       networks = app.networks.map(Raml.fromRaml(_)),
       versionInfo = versionInfo,
       secrets = Raml.fromRaml(app.secrets),
-      unreachableStrategy = app.unreachableStrategy.map(_.fromRaml).getOrElse(AppDefinition.DefaultUnreachableStrategy),
+      unreachableStrategy = app.unreachableStrategy.map(_.fromRaml).getOrElse(state.AppDefinition.DefaultUnreachableStrategy),
       killSelection = app.killSelection.fromRaml,
       tty = app.tty,
       executorResources = app.executorResources.map(_.fromRaml),
@@ -176,8 +176,8 @@ trait AppConversion extends DefaultConversions with CheckConversion with Constra
     result
   }
 
-  implicit val appUpdateRamlReader: Reads[(AppUpdate, AppDefinition), App] = Reads { src =>
-    val (update: AppUpdate, appDef: AppDefinition) = src
+  implicit val appUpdateRamlReader: Reads[(AppUpdate, state.AppDefinition), App] = Reads { src =>
+    val (update: AppUpdate, appDef: state.AppDefinition) = src
     // for validating and converting the returned App API object
     val app: App = appDef.toRaml
     app.copy(

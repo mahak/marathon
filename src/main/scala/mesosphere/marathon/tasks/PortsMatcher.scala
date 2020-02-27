@@ -164,12 +164,13 @@ class PortsMatcher private[tasks] (
   }
 
   private[this] lazy val offeredPortRanges: Seq[PortRange] = {
-    offer.getResourcesList
-      .withFilter(resource => resourceSelector(resource) && resource.getName == Resource.PORTS)
+    offer.getResourcesList().asScala
+      .iterator
+      .filter(resource => resourceSelector(resource) && resource.getName == Resource.PORTS)
       .iterator.flatMap { resource =>
         val rangeInResource = resource.getRanges.getRangeList
         val reservation = if (resource.hasReservation) Option(resource.getReservation) else None
-        rangeInResource.map { range =>
+        rangeInResource.asScala.map { range =>
           PortRange(resource.getRole: @silent, range.getBegin.toInt, range.getEnd.toInt, reservation)
         }
       }.toSeq

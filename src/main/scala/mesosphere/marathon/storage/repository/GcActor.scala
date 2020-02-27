@@ -266,7 +266,7 @@ private[storage] trait ScanBehavior[K, C, S] extends StrictLogging { this: FSM[S
 
         val currentlyInDeployment: SortedSet[OffsetDateTime] = storedPlans.iterator.flatMap { plan =>
           Seq(plan.originalVersion, plan.targetVersion)
-        }.toSeq
+        }.to(SortedSet)
 
         val deletionCandidates = rootVersions.diff(currentlyInDeployment + currentRoot.version.toOffsetDateTime)
 
@@ -304,7 +304,7 @@ private[storage] trait ScanBehavior[K, C, S] extends StrictLogging { this: FSM[S
             appVersionsInUse.addBinding(id, version)
         }
       }
-      appVersionsInUse.iterator.map { case (id, apps) => id -> apps.to[Set] }.toSeq
+      appVersionsInUse.iterator.map { case (id, apps) => id -> apps.to(Set) }.toMap
     }
 
     def podsInUse(roots: Seq[StoredGroup]): Map[AbsolutePathId, Set[OffsetDateTime]] = {
@@ -318,7 +318,7 @@ private[storage] trait ScanBehavior[K, C, S] extends StrictLogging { this: FSM[S
             podVersionsInUse.addBinding(id, version)
         }
       }
-      podVersionsInUse.iterator.map { case (id, pods) => id -> pods.to[Set] }.toSeq
+      podVersionsInUse.iterator.map { case (id, pods) => id -> pods.to(Set) }.toMap
     }
 
     def rootsInUse(): Source[StoredGroup, NotUsed] = {

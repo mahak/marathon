@@ -1,11 +1,11 @@
 package mesosphere.mesos.protos
 
 import com.google.protobuf.{ByteString, Message}
-import mesosphere.marathon.stream.Implicits._
-import org.apache.mesos.Protos
 import mesosphere.marathon.silent
+import org.apache.mesos.Protos
 
 import scala.collection.immutable.Seq
+import scala.jdk.CollectionConverters._
 import scala.language.implicitConversions
 
 trait Implicits {
@@ -131,7 +131,7 @@ trait Implicits {
       case Protos.Value.Type.SET =>
         SetResource(
           resource.getName,
-          resource.getSet.getItemList.toSet,
+          resource.getSet.getItemList.asScala.toSet,
           resource.getRole: @silent
         )
       case unsupported: Protos.Value.Type =>
@@ -315,9 +315,9 @@ object Implicits extends Implicits {
 
   implicit final class LabelsToMap(val labels: Protos.Labels) extends AnyVal {
     def fromProto: Map[String, String] =
-      labels.getLabelsList.asScala.iterator.collect {
+      labels.getLabelsList().asScala.iterator.collect {
         case label if label.hasKey && label.hasValue => label.getKey -> label.getValue
-      }.toSeq
+      }.toMap
   }
 
   implicit final class LabelToTuple(val label: Protos.Label) extends AnyVal {
@@ -329,6 +329,6 @@ object Implicits extends Implicits {
     def fromProto: Map[String, String] =
       labels.iterator.collect {
         case label if label.hasKey && label.hasValue => label.getKey -> label.getValue
-      }.toSeq
+      }.toMap
   }
 }

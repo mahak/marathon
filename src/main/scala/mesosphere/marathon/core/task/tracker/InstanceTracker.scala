@@ -77,12 +77,10 @@ trait InstanceTracker extends StrictLogging {
 
   def schedule(instance: Instance): Future[Done]
 
-  def schedule(instances: Instance*)(implicit ec: ExecutionContext): Future[Done] = {
+  def schedule(instances: Seq[Instance])(implicit ec: ExecutionContext): Future[Done] = {
     logger.info(s"Scheduling instances ${instances.mkString(",\n")}")
     Future.sequence(instances.map(schedule)).map { _ => Done }
   }
-
-  def schedule(instances: Seq[Instance])(implicit ec: ExecutionContext): Future[Done] = schedule(instances: _*)
 
   def revert(instance: Instance): Future[Done]
 
@@ -147,8 +145,7 @@ object InstanceTracker {
       new InstancesBySpec(specInstances.withDefault(appId => InstanceTracker.SpecInstances()))
     }
 
-    def forInstances(instances: Seq[Instance]): InstancesBySpec = forInstances(instances: _*)
-    def forInstances(instances: Instance*): InstancesBySpec = of(
+    def forInstances(instances: Seq[Instance]): InstancesBySpec = of(
       instances
         .groupBy(_.runSpecId)
         .map {

@@ -353,7 +353,7 @@ trait MarathonConf
   //  we must set gc actor threshold to not trigger it too early, 2 * max deployments looks like a good default
   validate(maxRunningDeployments, groupVersionsCacheSize) { (maxDeployments, versionsCacheSize) =>
     if (versionsCacheSize > 2 * maxDeployments) {
-      Right(Unit)
+      Right(())
     } else {
       Left(s"${groupVersionsCacheSize.name} must be more than 2 times higher than ${maxRunningDeployments.name}")
     }

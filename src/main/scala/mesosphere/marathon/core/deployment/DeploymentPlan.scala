@@ -17,6 +17,7 @@ import mesosphere.marathon.state.Container.Docker
 import mesosphere.marathon.state._
 
 import scala.collection.SortedMap
+import scala.jdk.CollectionConverters._
 
 sealed trait DeploymentAction {
   def runSpec: RunSpec
@@ -218,10 +219,9 @@ object DeploymentPlan {
     import org.jgrapht.graph.DefaultEdge
 
     def longestPathFromVertex[V](g: DirectedGraph[V, DefaultEdge], vertex: V): Seq[V] = {
-      import mesosphere.marathon.stream.Implicits.RichSet
 
       val outgoingEdges: Set[DefaultEdge] =
-        if (g.containsVertex(vertex)) g.outgoingEdgesOf(vertex)
+        if (g.containsVertex(vertex)) g.outgoingEdgesOf(vertex).asScala.toSet
         else Set.empty[DefaultEdge]
 
       if (outgoingEdges.isEmpty)
