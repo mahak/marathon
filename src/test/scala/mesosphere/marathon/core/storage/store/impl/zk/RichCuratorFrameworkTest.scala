@@ -7,7 +7,7 @@ import akka.util.ByteString
 import com.mesosphere.utils.zookeeper.ZookeeperServerTest
 import mesosphere.UnitTest
 import mesosphere.marathon.core.base.JvmExitsCrashStrategy
-import mesosphere.marathon.stream.Implicits._
+import scala.jdk.CollectionConverters._
 import org.apache.curator.framework.CuratorFramework
 import org.apache.zookeeper.ZooDefs.Perms
 import org.apache.zookeeper.data.{ACL, Id}

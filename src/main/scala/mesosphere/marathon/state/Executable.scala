@@ -2,7 +2,7 @@ package mesosphere.marathon
 package state
 
 import org.apache.mesos.{Protos => MesosProtos}
-import mesosphere.marathon.stream.Implicits._
+import scala.jdk.CollectionConverters._
 
 sealed trait Executable
 

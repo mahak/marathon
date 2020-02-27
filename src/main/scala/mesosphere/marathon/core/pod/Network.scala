@@ -3,7 +3,7 @@ package core.pod
 
 import mesosphere.marathon.Protos.NetworkDefinition
 import mesosphere.marathon.plugin.NetworkSpec
-import mesosphere.marathon.stream.Implicits._
+import scala.jdk.CollectionConverters._
 import mesosphere.mesos.protos.Implicits._
 import org.apache.mesos.{Protos => Mesos}
 

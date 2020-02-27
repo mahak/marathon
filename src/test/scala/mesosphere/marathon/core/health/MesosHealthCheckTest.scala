@@ -22,6 +22,7 @@ import play.api.libs.json.{Json, Writes}
 
 import scala.collection.immutable.Seq
 import scala.concurrent.duration._
+import scala.jdk.CollectionConverters._
 
 class MesosHealthCheckTest extends UnitTest {
 

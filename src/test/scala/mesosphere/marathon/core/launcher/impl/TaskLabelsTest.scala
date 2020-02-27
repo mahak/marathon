@@ -4,7 +4,7 @@ package core.launcher.impl
 import mesosphere.UnitTest
 import mesosphere.marathon.core.instance.{Instance, Reservation}
 import mesosphere.marathon.state.AbsolutePathId
-import mesosphere.marathon.stream.Implicits._
+import scala.jdk.CollectionConverters._
 import mesosphere.marathon.test.MarathonTestHelper
 import mesosphere.util.state.FrameworkId
 import org.apache.mesos.{Protos => MesosProtos}

@@ -14,7 +14,7 @@ import mesosphere.marathon.raml.{App, Resources}
 import mesosphere.marathon.state.Container.{Docker, Mesos, PortMapping}
 import mesosphere.marathon.state.VersionInfo.OnlyVersion
 import mesosphere.marathon.state.{AppDefinition, Container, AbsolutePathId, Timestamp, _}
-import mesosphere.marathon.stream.Implicits._
+import scala.jdk.CollectionConverters._
 import mesosphere.marathon.test.{MarathonTestHelper, SettableClock}
 import mesosphere.marathon.{Protos, _}
 import mesosphere.mesos.protos.{Resource, _}

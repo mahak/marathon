@@ -2,7 +2,7 @@ package mesosphere.marathon
 package state
 
 import mesosphere.marathon.core.readiness.ReadinessCheck
-import mesosphere.marathon.stream.Implicits._
+import scala.jdk.CollectionConverters._
 
 import scala.concurrent.duration._
 

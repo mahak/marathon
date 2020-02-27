@@ -18,7 +18,7 @@ import akka.Done
 import akka.http.scaladsl.model.StatusCodes._
 import com.typesafe.scalalogging.StrictLogging
 import mesosphere.marathon.api.LeaderProxyFilter
-import mesosphere.marathon.stream.Implicits._
+import scala.jdk.CollectionConverters._
 
 import scala.collection.JavaConverters._
 import scala.concurrent.{ExecutionContext, Future}

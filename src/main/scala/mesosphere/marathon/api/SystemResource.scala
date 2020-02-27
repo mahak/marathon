@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory
 import play.api.libs.json.Json
 
 import scala.concurrent.ExecutionContext
-import stream.Implicits._
+import scala.jdk.CollectionConverters._
 import com.wix.accord.dsl._
 import javax.ws.rs.container.{AsyncResponse, Suspended}
 

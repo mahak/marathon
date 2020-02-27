@@ -2,7 +2,7 @@ package mesosphere.marathon
 package api.serialization
 
 import mesosphere.marathon.state.PortDefinition
-import mesosphere.marathon.stream.Implicits._
+import scala.jdk.CollectionConverters._
 import mesosphere.mesos.protos.Implicits._
 import org.apache.mesos
 

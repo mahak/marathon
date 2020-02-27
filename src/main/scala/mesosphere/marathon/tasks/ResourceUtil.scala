@@ -2,7 +2,7 @@ package mesosphere.marathon
 package tasks
 
 import com.typesafe.scalalogging.StrictLogging
-import mesosphere.marathon.stream.Implicits._
+import scala.jdk.CollectionConverters._
 import mesosphere.marathon.state.DiskSource
 import mesosphere.mesos.protos
 import org.apache.mesos.Protos.Resource.DiskInfo.Source

@@ -11,7 +11,7 @@ import mesosphere.marathon.core.plugin.impl.PluginManagerImpl.{PluginHolder, Plu
 import mesosphere.marathon.core.plugin.{PluginDefinition, PluginDefinitions, PluginManager}
 import mesosphere.marathon.io.IO
 import mesosphere.marathon.plugin.plugin.PluginConfiguration
-import mesosphere.marathon.stream.Implicits._
+import scala.jdk.CollectionConverters._
 import org.apache.commons.io.FileUtils
 import play.api.libs.json.{JsObject, JsString, Json}
 

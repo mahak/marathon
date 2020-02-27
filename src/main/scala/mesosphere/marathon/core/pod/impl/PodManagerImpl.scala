@@ -7,7 +7,7 @@ import mesosphere.marathon.core.deployment.DeploymentPlan
 import mesosphere.marathon.core.group.GroupManager
 import mesosphere.marathon.core.pod.{PodDefinition, PodManager}
 import mesosphere.marathon.state.{AbsolutePathId, Timestamp}
-import mesosphere.marathon.stream.Implicits._
+import scala.jdk.CollectionConverters._
 
 import scala.collection.immutable.Seq
 import scala.concurrent.Future

@@ -5,7 +5,7 @@ import mesosphere.marathon.core.launcher.InstanceOpFactory
 import mesosphere.marathon.core.launcher.impl.ReservationLabels
 import mesosphere.marathon.metrics.Metrics
 import mesosphere.marathon.state.VolumeMount
-import mesosphere.marathon.stream.Implicits._
+import scala.jdk.CollectionConverters._
 import mesosphere.mesos.protos.ResourceProviderID
 import org.apache.mesos.Protos.Resource.ReservationInfo
 import org.apache.mesos.{Protos => Mesos}

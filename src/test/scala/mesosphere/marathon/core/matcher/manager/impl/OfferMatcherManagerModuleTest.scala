@@ -17,7 +17,7 @@ import mesosphere.marathon.core.matcher.manager.{OfferMatcherManagerConfig, Offe
 import mesosphere.marathon.core.task.Task
 import mesosphere.marathon.metrics.dummy.DummyMetrics
 import mesosphere.marathon.state.{AbsolutePathId, Timestamp}
-import mesosphere.marathon.stream.Implicits._
+import scala.jdk.CollectionConverters._
 import mesosphere.marathon.tasks.ResourceUtil
 import mesosphere.marathon.test.MarathonTestHelper
 import org.apache.mesos.Protos.{Offer, TaskInfo}

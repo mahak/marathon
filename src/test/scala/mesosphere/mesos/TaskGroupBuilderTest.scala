@@ -12,7 +12,7 @@ import mesosphere.marathon.raml
 import mesosphere.marathon.raml.{Endpoint, Resources, Lifecycle}
 import mesosphere.marathon.state._
 import mesosphere.marathon.state
-import mesosphere.marathon.stream.Implicits._
+import scala.jdk.CollectionConverters._
 import mesosphere.marathon.test.{MarathonTestHelper, SettableClock}
 import mesosphere.marathon.AllConf
 import org.apache.mesos.Protos.{ExecutorInfo, TaskGroupInfo, TaskInfo}

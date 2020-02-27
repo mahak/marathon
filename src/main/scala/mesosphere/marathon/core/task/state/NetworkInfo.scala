@@ -3,7 +3,7 @@ package core.task.state
 
 import com.typesafe.scalalogging.StrictLogging
 import mesosphere.marathon.state._
-import mesosphere.marathon.stream.Implicits._
+import scala.jdk.CollectionConverters._
 import org.apache.mesos
 
 import scala.annotation.tailrec

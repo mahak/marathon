@@ -7,7 +7,7 @@ import mesosphere.marathon.Protos.Constraint.Operator._
 import mesosphere.marathon._
 import mesosphere.marathon.core.instance.{Instance, TestInstanceBuilder}
 import mesosphere.marathon.state.{AbsolutePathId, AppDefinition}
-import mesosphere.marathon.stream.Implicits._
+import scala.jdk.CollectionConverters._
 import mesosphere.marathon.test.MarathonTestHelper
 import mesosphere.mesos.protos.{FrameworkID, OfferID, SlaveID}
 import org.apache.mesos.Protos

@@ -18,7 +18,7 @@ import mesosphere.marathon.plugin.validation.RunSpecValidator
 import mesosphere.marathon.raml.{App, Apps, ExecutorResources, Resources}
 import mesosphere.marathon.state.Container.{Docker, MesosDocker}
 import mesosphere.marathon.state.VersionInfo._
-import mesosphere.marathon.stream.Implicits._
+import scala.jdk.CollectionConverters._
 import mesosphere.mesos.TaskBuilder
 import mesosphere.mesos.protos.{Resource, ScalarResource}
 import org.apache.mesos.{Protos => mesos}

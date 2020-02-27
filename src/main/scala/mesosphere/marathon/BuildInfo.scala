@@ -3,7 +3,7 @@ package mesosphere.marathon
 import java.util.jar.{Attributes, Manifest}
 import scala.Predef._
 import scala.util.control.NonFatal
-import mesosphere.marathon.stream.Implicits._
+import scala.jdk.CollectionConverters._
 import mesosphere.marathon.io.IO
 
 case object BuildInfo {

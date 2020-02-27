@@ -3,7 +3,7 @@ package core.storage.store.impl.zk
 
 import akka.Done
 import akka.util.ByteString
-import mesosphere.marathon.stream.Implicits._
+import scala.jdk.CollectionConverters._
 import org.apache.curator.framework.CuratorFramework
 import org.apache.curator.framework.api.CuratorEventType._
 import org.apache.curator.framework.api.{BackgroundCallback, CuratorEvent}
