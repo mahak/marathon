@@ -573,7 +573,7 @@ object PodStatusConversionTest {
             networkInfo = NetworkInfoPlaceholder(hostPorts = Seq(1001))
           )
         )
-      ).iterator.map(t => t.taskId -> t).toSeq,
+      ).iterator.map(t => t.taskId -> t).toMap,
       runSpec = pod,
       reservation = maybeReservation,
       role = "test"

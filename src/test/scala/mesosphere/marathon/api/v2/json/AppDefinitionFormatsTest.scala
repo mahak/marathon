@@ -21,7 +21,7 @@ class AppDefinitionFormatsTest extends UnitTest
   with Matchers
   with ValidationTestLike {
 
-  import Formats.PathIdFormat
+  import Formats.{PathIdReads, PathIdWrites}
 
   object Fixture {
     val a1 = AppDefinition(

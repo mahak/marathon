@@ -51,7 +51,7 @@ class TaskLabelsTest extends UnitTest {
     val frameworkId = MarathonTestHelper.frameworkId
     val otherFrameworkId = FrameworkId("very other different framework id")
 
-    val unlabeledResources = MarathonTestHelper.makeBasicOffer().getResourcesList
+    val unlabeledResources = MarathonTestHelper.makeBasicOffer().getResourcesList.asScala
     require(unlabeledResources.nonEmpty)
     require(unlabeledResources.forall(!_.hasReservation))
 
@@ -59,7 +59,7 @@ class TaskLabelsTest extends UnitTest {
       MarathonTestHelper.makeBasicOffer(
         reservation = Some(TaskLabels.labelsForTask(frameworkId, reservationId)),
         role = "test"
-      ).getResourcesList.to(Seq)
+      ).getResourcesList.asScala.to(Seq)
     }
 
     val labeledResources = labelResourcesFor(frameworkId)

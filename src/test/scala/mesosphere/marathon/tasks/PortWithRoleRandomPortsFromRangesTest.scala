@@ -20,7 +20,7 @@ class PortWithRoleRandomPortsFromRangesTest extends UnitTest {
       withClue(s"seed = $seed") {
         val rand = new Random(new util.Random(seed.toLong))
 
-        assert(PortWithRole.lazyRandomPortsFromRanges(rand)(input).to[Set] == expectedOutput.to[Set])
+        assert(PortWithRole.lazyRandomPortsFromRanges(rand)(input).to(Set) == expectedOutput.to(Set))
       }
     }
 

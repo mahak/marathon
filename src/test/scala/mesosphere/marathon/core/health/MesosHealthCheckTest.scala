@@ -8,10 +8,10 @@ import mesosphere.UnitTest
 import mesosphere.marathon.Protos.HealthCheckDefinition.Protocol
 import mesosphere.marathon.api.JsonTestHelper
 import mesosphere.marathon.api.v2.ValidationHelper
+import mesosphere.marathon.core.instance.Instance
 import mesosphere.marathon.core.pod.{BridgeNetwork, ContainerNetwork, HostNetwork}
 import mesosphere.marathon.core.task.Task
 import mesosphere.marathon.core.task.state.NetworkInfo
-import mesosphere.marathon.core.instance.Instance
 import mesosphere.marathon.raml.{AppHealthCheck, Raml}
 import mesosphere.marathon.state.Container.PortMapping
 import mesosphere.marathon.state._
@@ -22,7 +22,6 @@ import play.api.libs.json.{Json, Writes}
 
 import scala.collection.immutable.Seq
 import scala.concurrent.duration._
-import scala.jdk.CollectionConverters._
 
 class MesosHealthCheckTest extends UnitTest {
 
@@ -66,7 +65,7 @@ class MesosHealthCheckTest extends UnitTest {
           "ipProtocol" : "IPv4"
         }
       """
-      JsonTestHelper.assertThatJsonOf(MesosCommandHealthCheck(command = Command("echo healthy")))
+      JsonTestHelper.assertThatJsonOf(MesosCommandHealthCheck(command = Command("echo healthy")): HealthCheck)
         .correspondsToJsonString(json)
     }
 
@@ -138,7 +137,7 @@ class MesosHealthCheckTest extends UnitTest {
           "ipProtocol" : "IPv4"
         }
       """
-      JsonTestHelper.assertThatJsonOf(mesosHttpHealthCheckWithPortIndex)
+      JsonTestHelper.assertThatJsonOf(mesosHttpHealthCheckWithPortIndex: HealthCheck)
         .correspondsToJsonString(portIndexJson)
 
       val portJson =
@@ -155,7 +154,7 @@ class MesosHealthCheckTest extends UnitTest {
           "ipProtocol" : "IPv4"
         }
       """
-      JsonTestHelper.assertThatJsonOf(mesosHttpHealthCheckWithPort)
+      JsonTestHelper.assertThatJsonOf(mesosHttpHealthCheckWithPort: HealthCheck)
         .correspondsToJsonString(portJson)
     }
 
@@ -208,7 +207,7 @@ class MesosHealthCheckTest extends UnitTest {
           "ipProtocol" : "IPv4"
         }
       """
-      JsonTestHelper.assertThatJsonOf(mesosHttpHealthCheckWithPortIndex.copy(protocol = Protocol.MESOS_HTTPS))
+      JsonTestHelper.assertThatJsonOf(mesosHttpHealthCheckWithPortIndex.copy(protocol = Protocol.MESOS_HTTPS): HealthCheck)
         .correspondsToJsonString(portIndexJson)
 
       val portJson =
@@ -225,7 +224,7 @@ class MesosHealthCheckTest extends UnitTest {
           "ipProtocol" : "IPv4"
         }
       """
-      JsonTestHelper.assertThatJsonOf(mesosHttpHealthCheckWithPort.copy(protocol = Protocol.MESOS_HTTPS))
+      JsonTestHelper.assertThatJsonOf(mesosHttpHealthCheckWithPort.copy(protocol = Protocol.MESOS_HTTPS): HealthCheck)
         .correspondsToJsonString(portJson)
     }
 
@@ -818,7 +817,7 @@ class MesosHealthCheckTest extends UnitTest {
           "ipProtocol" : "IPv4"
         }
       """
-      JsonTestHelper.assertThatJsonOf(mesosTcpHealthCheckWithPortIndex)
+      JsonTestHelper.assertThatJsonOf(mesosTcpHealthCheckWithPortIndex: HealthCheck)
         .correspondsToJsonString(portIndexJson)
 
       val portJson =
@@ -834,7 +833,7 @@ class MesosHealthCheckTest extends UnitTest {
           "ipProtocol" : "IPv4"
         }
       """
-      JsonTestHelper.assertThatJsonOf(mesosTcpHealthCheckWithPort)
+      JsonTestHelper.assertThatJsonOf(mesosTcpHealthCheckWithPort: HealthCheck)
         .correspondsToJsonString(portJson)
     }
   }

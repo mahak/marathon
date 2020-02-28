@@ -162,7 +162,7 @@ class KillServiceActorTest extends AkkaUnitTest with StrictLogging with Eventual
         val instances: Map[Instance.Id, Instance] = (1 to 10).iterator.map { index =>
           val instance = f.mockInstance(f.runSpecId, f.clock.now(), mesos.Protos.TaskState.TASK_RUNNING)
           instance.instanceId -> instance
-        }.toSeq
+        }.toMap
 
         instances.valuesIterator.foreach { instance =>
           actor ! KillServiceActor.KillInstances(Seq(instance), Promise[Done]())
@@ -172,7 +172,7 @@ class KillServiceActorTest extends AkkaUnitTest with StrictLogging with Eventual
         verify(f.driver, timeout(f.killConfig.killRetryTimeout.toMillis.toInt * 2).times(5)).killTask(captor.capture())
         reset(f.driver)
 
-        captor.getAllValues.foreach { id =>
+        captor.getAllValues().asScala.foreach { id =>
           val instanceId = Task.Id.parse(id).instanceId
           instances.get(instanceId).foreach { instance =>
             f.publishInstanceChanged(TaskStatusUpdateTestHelper.killed(instance).wrapped)
@@ -190,7 +190,7 @@ class KillServiceActorTest extends AkkaUnitTest with StrictLogging with Eventual
         val instances: Map[Instance.Id, Instance] = (1 to 10).iterator.map { index =>
           val instance = f.mockInstance(f.runSpecId, f.clock.now(), mesos.Protos.TaskState.TASK_RUNNING)
           instance.instanceId -> instance
-        }.toSeq
+        }.toMap
 
         val promise = Promise[Done]()
         actor ! KillServiceActor.KillInstances(instances.values.to(Seq), promise)
@@ -199,7 +199,7 @@ class KillServiceActorTest extends AkkaUnitTest with StrictLogging with Eventual
         verify(f.driver, timeout(f.killConfig.killRetryTimeout.toMillis.toInt * 2).times(5)).killTask(captor.capture())
         reset(f.driver)
 
-        captor.getAllValues.foreach { id =>
+        captor.getAllValues.asScala.foreach { id =>
           val instanceId = Task.Id.parse(id).instanceId
           instances.get(instanceId).foreach { instance =>
             f.publishInstanceChanged(TaskStatusUpdateTestHelper.killed(instance).wrapped)
@@ -331,7 +331,7 @@ class KillServiceActorTest extends AkkaUnitTest with StrictLogging with Eventual
         .decommissioned()
         .addTaskRunning()
         .getInstance()
-      f.instanceTracker.instancesBySpec()(any[ExecutionContext]).returns(Future.successful(InstanceTracker.InstancesBySpec.forInstances(decommissionedInstance)))
+      f.instanceTracker.instancesBySpec()(any[ExecutionContext]).returns(Future.successful(InstanceTracker.InstancesBySpec.forInstances(Seq(decommissionedInstance))))
 
       When("Actor is started")
       val actor = system.actorOf(KillServiceActor.props(f.driverHolder, f.instanceTracker, f.killConfig, f.metrics, f.clock), s"KillService-${UUID.randomUUID()}")

@@ -132,7 +132,7 @@ object MarathonTestHelper {
     val unavailableOfferBuilder = Unavailability.newBuilder()
       .setStart(TimeInfo.newBuilder().setNanoseconds(startTime.nanos))
 
-    if (duration.isFinite()) {
+    if (duration.isFinite) {
       unavailableOfferBuilder.setDuration(DurationInfo.newBuilder().setNanoseconds(duration.toNanos))
     }
 
@@ -520,7 +520,7 @@ object MarathonTestHelper {
             .build)
         }
         val taskStatus = mesosStatus(task.taskId, task.status.mesosStatus, networkInfos)
-        val ipAddresses: Seq[Mesos.NetworkInfo.IPAddress] = networkInfos.iterator.flatMap(_.getIpAddressesList).toSeq
+        val ipAddresses: Seq[Mesos.NetworkInfo.IPAddress] = networkInfos.iterator.flatMap(_.getIpAddressesList.asScala).toSeq
         val initialNetworkInfo = core.task.state.NetworkInfo(
           hostName.getOrElse("host.some"),
           hostPorts = hostPorts,

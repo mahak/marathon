@@ -145,7 +145,7 @@ object InstanceTracker {
       new InstancesBySpec(specInstances.withDefault(appId => InstanceTracker.SpecInstances()))
     }
 
-    def forInstances(instances: Seq[Instance]): InstancesBySpec = of(
+    def forInstances(instances: Iterable[Instance]): InstancesBySpec = of(
       instances
         .groupBy(_.runSpecId)
         .map {

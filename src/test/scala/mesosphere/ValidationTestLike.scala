@@ -20,7 +20,7 @@ trait ValidationTestLike extends Validation {
   this: Assertions =>
 
   private def jsErrorToFailure(error: JsError): Failure = Failure(
-    error.errors.flatMap {
+    error.errors.iterator.flatMap {
       case (path, validationErrors) =>
         validationErrors.map { validationError =>
           RuleViolation(
@@ -28,7 +28,7 @@ trait ValidationTestLike extends Validation {
             validationError.message,
             path = Path(path.toString.split("/").filter(_ != "").map(Generic(_)): _*))
         }
-    }(breakOut)
+    }.toSet
   )
   /**
     * Validator which takes an object, serializes it to JSON, and then parses it back, allowing it to test validations

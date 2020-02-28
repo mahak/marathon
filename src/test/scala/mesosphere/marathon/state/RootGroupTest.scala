@@ -312,7 +312,7 @@ class RootGroupTest extends UnitTest with GroupCreation {
 
       When("the dependency graph is computed")
       val dependencyGraph = current.dependencyGraph
-      val ids: Set[PathId] = dependencyGraph.vertexSet.map(_.id)
+      val ids: Set[PathId] = dependencyGraph.vertexSet.asScala.map(_.id).toSet
 
       Then("the dependency graph is correct")
       ids should have size 8
@@ -383,7 +383,7 @@ class RootGroupTest extends UnitTest with GroupCreation {
 
       When("the dependency graph is calculated")
       val dependencyGraph = current.dependencyGraph
-      val ids: Set[PathId] = dependencyGraph.vertexSet.map(_.id)
+      val ids: Set[PathId] = dependencyGraph.vertexSet.asScala.map(_.id).toSet
 
       Then("the dependency graph is correct")
       ids should have size 8

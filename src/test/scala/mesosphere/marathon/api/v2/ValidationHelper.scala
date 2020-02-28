@@ -21,7 +21,7 @@ object ValidationHelper {
               ConstraintViolation(path.toString, msg)
             }
           }
-      }.toSeq
+      }.toSet
       case _ => Set.empty
     }
   }

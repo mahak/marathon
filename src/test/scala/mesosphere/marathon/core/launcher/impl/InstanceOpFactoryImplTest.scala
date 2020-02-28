@@ -125,7 +125,7 @@ class InstanceOpFactoryImplTest extends UnitTest {
           case None => None
         }
       }
-    }.toSeq
+    }.toMap
 
     val allocatedPortsPerTask: Map[String, Seq[Int]] = instance.tasksMap.iterator.map {
       case (EphemeralTaskId(_, Some(ctName)), task) =>
@@ -136,7 +136,7 @@ class InstanceOpFactoryImplTest extends UnitTest {
         ctName -> ports
       case (other, _) =>
         throw new IllegalStateException(s"Unsupported task id: ${other}")
-    }.toSeq
+    }.toMap
 
     allocatedPortsPerTask should be(expectedHostPortsPerCT)
 

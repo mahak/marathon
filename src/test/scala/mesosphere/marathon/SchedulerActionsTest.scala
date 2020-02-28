@@ -71,7 +71,7 @@ class SchedulerActionsTest extends AkkaUnitTest {
       val instance = TestInstanceBuilder.newBuilder(app.id).addTaskRunning().getInstance()
       val orphanedInstance = TestInstanceBuilder.newBuilder(orphanedApp.id).addTaskRunning().getInstance()
 
-      f.instanceTracker.instancesBySpec() returns Future.successful(InstancesBySpec.forInstances(instance, orphanedInstance))
+      f.instanceTracker.instancesBySpec() returns Future.successful(InstancesBySpec.forInstances(Seq(instance, orphanedInstance)))
       val rootGroup: RootGroup = RootGroup(apps = Map((app.id, app)))
       f.groupRepo.root() returns Future.successful(rootGroup)
 

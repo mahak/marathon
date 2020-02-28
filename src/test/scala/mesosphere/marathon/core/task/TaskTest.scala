@@ -56,31 +56,31 @@ class TaskTest extends UnitTest with Inside {
         .runningTaskForApp(appWithoutIpAddress.id)
 
     def taskWithOneIp: Task = {
-      val ipAddresses: Seq[MesosProtos.NetworkInfo.IPAddress] = Seq(networkWithOneIp1).flatMap(_.getIpAddressesList)
+      val ipAddresses: Seq[MesosProtos.NetworkInfo.IPAddress] = Seq(networkWithOneIp1).flatMap(_.getIpAddressesList.asScala)
       val t = TestTaskBuilder.Helper.runningTaskForApp(appWithIpAddress.id)
       t.copy(status = t.status.copy(networkInfo = NetworkInfo(hostName = host, hostPorts = Nil, ipAddresses = ipAddresses)))
     }
 
     def taskWithMultipleNetworksAndOneIp: Task = {
-      val ipAddresses: Seq[MesosProtos.NetworkInfo.IPAddress] = Seq(networkWithoutIp, networkWithOneIp1).flatMap(_.getIpAddressesList)
+      val ipAddresses: Seq[MesosProtos.NetworkInfo.IPAddress] = Seq(networkWithoutIp, networkWithOneIp1).flatMap(_.getIpAddressesList.asScala)
       val t = TestTaskBuilder.Helper.runningTaskForApp(appWithIpAddress.id)
       t.copy(status = t.status.copy(networkInfo = NetworkInfo(hostName = host, hostPorts = Nil, ipAddresses = ipAddresses)))
     }
 
     def taskWithMultipleNetworkAndNoIp: Task = {
-      val ipAddresses: Seq[MesosProtos.NetworkInfo.IPAddress] = Seq(networkWithoutIp, networkWithoutIp).flatMap(_.getIpAddressesList)
+      val ipAddresses: Seq[MesosProtos.NetworkInfo.IPAddress] = Seq(networkWithoutIp, networkWithoutIp).flatMap(_.getIpAddressesList.asScala)
       val t = TestTaskBuilder.Helper.runningTaskForApp(appWithIpAddress.id)
       t.copy(status = t.status.copy(networkInfo = NetworkInfo(hostName = host, hostPorts = Nil, ipAddresses = ipAddresses)))
     }
 
     def taskWithOneNetworkAndMultipleIPs: Task = {
-      val ipAddresses: Seq[MesosProtos.NetworkInfo.IPAddress] = Seq(networkWithMultipleIps).flatMap(_.getIpAddressesList)
+      val ipAddresses: Seq[MesosProtos.NetworkInfo.IPAddress] = Seq(networkWithMultipleIps).flatMap(_.getIpAddressesList.asScala)
       val t = TestTaskBuilder.Helper.runningTaskForApp(appWithIpAddress.id)
       t.copy(status = t.status.copy(networkInfo = NetworkInfo(hostName = host, hostPorts = Nil, ipAddresses = ipAddresses)))
     }
 
     def taskWithMultipleNetworkAndMultipleIPs: Task = {
-      val ipAddresses: Seq[MesosProtos.NetworkInfo.IPAddress] = Seq(networkWithOneIp1, networkWithOneIp2).flatMap(_.getIpAddressesList)
+      val ipAddresses: Seq[MesosProtos.NetworkInfo.IPAddress] = Seq(networkWithOneIp1, networkWithOneIp2).flatMap(_.getIpAddressesList.asScala)
       val t = TestTaskBuilder.Helper.runningTaskForApp(appWithIpAddress.id)
       t.copy(status = t.status.copy(networkInfo = NetworkInfo(hostName = host, hostPorts = Nil, ipAddresses = ipAddresses)))
     }

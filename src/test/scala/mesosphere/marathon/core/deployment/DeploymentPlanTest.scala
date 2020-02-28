@@ -193,7 +193,7 @@ class DeploymentPlanTest extends UnitTest with GroupCreation {
       val apps: Map[AbsolutePathId, AppDefinition] = (1 to 4).iterator.map { i =>
         val app = AppDefinition(AbsolutePathId(s"/test/$i"), Some("cmd"), instances = instances, role = "*")
         app.id -> app
-      }.toSeq
+      }.toMap
 
       val targetGroup = createRootGroup(groups = Set(createGroup(
         id = "/test".toAbsolutePath,

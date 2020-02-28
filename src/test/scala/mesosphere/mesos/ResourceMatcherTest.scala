@@ -39,11 +39,11 @@ class ResourceMatcherTest extends UnitTest with Inside with TableDrivenPropertyC
   "ResourceMatcher" should {
     "match with app.disk == 0, even if no disk resource is contained in the offer" in {
       val offerBuilder = MarathonTestHelper.makeBasicOffer()
-      val diskResourceIndex = offerBuilder.getResourcesList.toIndexedSeq.indexWhere(_.getName == "disk")
+      val diskResourceIndex = offerBuilder.getResourcesList.asScala.toIndexedSeq.indexWhere(_.getName == "disk")
       offerBuilder.removeResources(diskResourceIndex)
       val offer = offerBuilder.build()
 
-      offer.getResourcesList.find(_.getName == "disk") should be('empty)
+      offer.getResourcesList.asScala.find(_.getName == "disk") should be('empty)
 
       val app = AppDefinition(
         id = "/test".toAbsolutePath,
@@ -1275,7 +1275,7 @@ class ResourceMatcherTest extends UnitTest with Inside with TableDrivenPropertyC
       s"Match an offer with $diskType disk type if disk is not required" in {
 
         val offerBuilder = MarathonTestHelper.makeBasicOffer()
-        val diskResourceIndex = offerBuilder.getResourcesList.toIndexedSeq.indexWhere(_.getName == "disk")
+        val diskResourceIndex = offerBuilder.getResourcesList.asScala.toIndexedSeq.indexWhere(_.getName == "disk")
         offerBuilder.removeResources(diskResourceIndex)
 
         addDiskResource(diskType, offerBuilder)
@@ -1326,7 +1326,7 @@ class ResourceMatcherTest extends UnitTest with Inside with TableDrivenPropertyC
 
       s"Reject an offer with $diskType disk type if disk is required and there are no other disk types available" in {
         val offerBuilder = MarathonTestHelper.makeBasicOffer()
-        val diskResourceIndex = offerBuilder.getResourcesList.toIndexedSeq.indexWhere(_.getName == "disk")
+        val diskResourceIndex = offerBuilder.getResourcesList.asScala.toIndexedSeq.indexWhere(_.getName == "disk")
         offerBuilder.removeResources(diskResourceIndex)
 
         addDiskResource(diskType, offerBuilder)

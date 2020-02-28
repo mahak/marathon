@@ -84,10 +84,13 @@ object Dependencies {
     // test
     Test.diffson % "test",
     Test.scalatest % "test",
+    Test.scalatestMockito % "test",
+    Test.scalatestScalacheck % "test",
     Test.mockito % "test",
     Test.akkaTestKit % "test",
     Test.akkaHttpTestKit % "test",
     Test.junit % "test",
+    Test.scalacheck % "test",
     Test.usiTestUtils % "test"
   ) ++ Curator.all
     ++ DropwizardMetrics.all
@@ -131,6 +134,7 @@ object Dependency {
     val Mustache = "0.9.0"
     val PlayJson = "2.8.1"
     val Raven = "8.0.3"
+    val ScalaCheck = "1.14.3"
     val ScalaLogging = "3.9.2"
     val ScalaPb = "0.6.6"
     val Scallop = "3.3.2"
@@ -149,6 +153,8 @@ object Dependency {
     val JUnitBenchmarks = "0.7.2"
     val Mockito = "1.10.19"
     val ScalaTest = "3.1.1"
+    val ScalaTestMockito = "3.1.0.0"
+    val ScalaTestScalaCheck = "3.1.1.1"
     val UsiTestUtil = "0.1.33-745d9bb-SNAPSHOT"
   }
 
@@ -255,11 +261,14 @@ object Dependency {
   object Test {
     val jmh = "org.openjdk.jmh" % "jmh-generator-annprocess" % V.JMH
     val scalatest = "org.scalatest" %% "scalatest" % V.ScalaTest
+    val scalatestMockito = "org.scalatestplus" %% "mockito-1-10" % V.ScalaTestMockito
+    val scalatestScalacheck = "org.scalatestplus" %% "scalacheck-1-14" % V.ScalaTestScalaCheck
     val mockito = "org.mockito" % "mockito-all" % V.Mockito
     val akkaTestKit = "com.typesafe.akka" %% "akka-testkit" % V.Akka
     val akkaHttpTestKit = "com.typesafe.akka" %% "akka-http-testkit" % V.AkkaHttp
     val diffson = "org.gnieh" %% "diffson-play-json" % V.Diffson
     val junit = "junit" % "junit" % V.JUnit
+    val scalacheck = "org.scalacheck" %% "scalacheck" % V.ScalaCheck
     val usiTestUtils = ("com.mesosphere.usi" %% "test-utils" % V.UsiTestUtil).excludeAll(excludeZk35)
   }
 }
