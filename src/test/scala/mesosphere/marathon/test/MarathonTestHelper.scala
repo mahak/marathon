@@ -54,7 +54,6 @@ object MarathonTestHelper {
     maxInstancesPerOffer: Int = 1,
     minReviveOffersInterval: Long = 100,
     mesosRole: Option[String] = None,
-    acceptedResourceRoles: Option[Set[String]] = None,
     envVarsPrefix: Option[String] = None,
     maxZkNodeSize: Option[Int] = None,
     internalStorageBackend: Option[String] = None): AllConf = {
@@ -67,7 +66,6 @@ object MarathonTestHelper {
     )
 
     mesosRole.foreach(args ++= Seq("--mesos_role", _))
-    acceptedResourceRoles.foreach(v => args ++= Seq("--default_accepted_resource_roles", v.mkString(",")))
     maxZkNodeSize.foreach(size => args ++= Seq("--zk_max_node_size", size.toString))
     envVarsPrefix.foreach(args ++= Seq("--env_vars_prefix", _))
     internalStorageBackend.foreach(backend => args ++= Seq("--internal_store_backend", backend))

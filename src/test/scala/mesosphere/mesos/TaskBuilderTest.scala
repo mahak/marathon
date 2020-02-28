@@ -1491,14 +1491,14 @@ class TaskBuilderTest extends UnitTest {
       )
 
       val env4 = TaskBuilder.taskContextEnv(runSpec = runSpec, Some(Task.LegacyId(runSpec.id, ".", uuid)), enforceRole = None)
-        .filterKeys(_.startsWith("MARATHON_APP_LABEL"))
+        .collect { case (k, v) if k.startsWith("MARATHON_APP_LABEL") => k -> v.split(" ").toSet }
 
       assert(
         env4 == Map(
-          "MARATHON_APP_LABELS" -> "OTHER_LABEL_A LABEL LABEL_WITH_INVALID_CHARS",
-          "MARATHON_APP_LABEL_LABEL" -> "VALUE1",
-          "MARATHON_APP_LABEL_LABEL_WITH_INVALID_CHARS" -> "VALUE2",
-          "MARATHON_APP_LABEL_OTHER_LABEL_A" -> "VALUE3"
+          "MARATHON_APP_LABELS" -> Set("OTHER_LABEL_A", "LABEL", "LABEL_WITH_INVALID_CHARS"),
+          "MARATHON_APP_LABEL_LABEL" -> Set("VALUE1"),
+          "MARATHON_APP_LABEL_LABEL_WITH_INVALID_CHARS" -> Set("VALUE2"),
+          "MARATHON_APP_LABEL_OTHER_LABEL_A" -> Set("VALUE3")
         )
       )
     }
@@ -1993,7 +1993,6 @@ class TaskBuilderTest extends UnitTest {
       taskId,
       MarathonTestHelper.defaultConfig(
         mesosRole = mesosRole,
-        acceptedResourceRoles = acceptedResourceRoles,
         envVarsPrefix = envVarsPrefix))
 
     val config = MarathonTestHelper.defaultConfig()
