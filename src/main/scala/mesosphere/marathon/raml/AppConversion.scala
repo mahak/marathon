@@ -24,7 +24,7 @@ trait AppConversion extends DefaultConversions with CheckConversion with Constra
   }
 
   implicit val versionInfoWrites: Writes[state.VersionInfo, Option[VersionInfo]] = Writes {
-    case state.VersionInfo.FullVersionInfo(_, scale, config) => ??? /*Some(VersionInfo(scale.toOffsetDateTime, config.toOffsetDateTime)) TODO wat */
+    case state.VersionInfo.FullVersionInfo(_, scale, config) => Some(VersionInfo(scale.toOffsetDateTime, config.toOffsetDateTime))
     case state.VersionInfo.OnlyVersion(_) => None
     case state.VersionInfo.NoVersion => None
   }

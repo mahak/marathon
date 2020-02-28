@@ -9,6 +9,7 @@ object Dependencies {
     akkaActor % "compile",
     akkaStream % "compile",
     akkaHttp % "compile",
+    akkaHttpXml % "compile",
     playJson % "compile",
     scalaLogging % "compile",
     logback % "compile",
@@ -34,33 +35,34 @@ object Dependencies {
   val marathon = (Seq(
     // runtime
     akkaActor % "compile",
+    akkaHttp % "compile",
+    akkaHttpPlayJson % "compile",
+    akkaHttpXml % "compile",
     akkaSlf4j % "compile",
     akkaStream % "compile",
-    akkaHttp % "compile",
+    alpakkaCodes % "compile",
+    alpakkaS3 % "compile",
     asyncAwait % "compile",
     aws % "compile",
-    mesos % "compile",
-    jerseyServlet % "compile",
-    jerseyMultiPart % "compile",
-    jettyEventSource % "compile",
-    uuidGenerator % "compile",
-    jGraphT % "compile",
     beanUtils % "compile",
-    playJson % "compile",
-    marathonUI % "compile",
-    marathonApiConsole % "compile",
-    wixAccord % "compile",
-    java8Compat % "compile",
-    scalaLogging % "compile",
-    logback % "compile",
-    logstash % "compile",
-    raven % "compile",
-    akkaHttpPlayJson % "compile",
-    alpakkaS3 % "compile",
     commonsCompress % "compile", // used for tar flow
     commonsIO % "compile",
-    alpakkaCodes % "compile",
+    jGraphT % "compile",
+    java8Compat % "compile",
+    jerseyMultiPart % "compile",
+    jerseyServlet % "compile",
+    jettyEventSource % "compile",
+    logback % "compile",
+    logstash % "compile",
+    marathonApiConsole % "compile",
+    marathonUI % "compile",
+    mesos % "compile",
+    playJson % "compile",
+    raven % "compile",
     scalaCollectionCompat % "compile",
+    scalaLogging % "compile",
+    uuidGenerator % "compile",
+    wixAccord % "compile",
 
     // old Chaos deps
     guava % "compile",
@@ -163,6 +165,7 @@ object Dependency {
 
   val akkaActor = "com.typesafe.akka" %% "akka-actor" % V.Akka
   val akkaHttp = "com.typesafe.akka" %% "akka-http" % V.AkkaHttp
+  val akkaHttpXml = "com.typesafe.akka" %% "akka-http-xml" % V.AkkaHttp
   val akkaHttpPlayJson = "de.heikoseeberger" %% "akka-http-play-json" % "1.31.0"
   val akkaSlf4j = "com.typesafe.akka" %% "akka-slf4j" % V.Akka
   val akkaStream = "com.typesafe.akka" %% "akka-stream" % V.Akka
