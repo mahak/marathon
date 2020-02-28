@@ -35,7 +35,6 @@ import scala.collection.immutable.Seq
 import scala.concurrent.Await.result
 import scala.concurrent.Future
 import scala.concurrent.duration._
-import scala.jdk.CollectionConverters._
 import scala.util.control.NonFatal
 
 /**
@@ -199,12 +198,12 @@ class MarathonFacade(
 
   def listAppsInBaseGroup: RestResult[List[App]] = {
     val res = result(requestFor[ITListAppsResult](Get(s"$url/v2/apps")), waitTime)
-    res.map(_.apps.iterator.filterAs(app => isInBaseGroup(app.id.toPath)).toSeq)
+    res.map(_.apps.iterator.filter(app => isInBaseGroup(app.id.toPath)).toList)
   }
 
   def listAppsInBaseGroupForAppId(appId: AbsolutePathId): RestResult[List[App]] = {
     val res = result(requestFor[ITListAppsResult](Get(s"$url/v2/apps")), waitTime)
-    res.map(_.apps.iterator.filterAs(app => isInBaseGroup(app.id.toPath) && app.id.toPath == appId).toSeq)
+    res.map(_.apps.iterator.filter(app => isInBaseGroup(app.id.toPath) && app.id.toPath == appId).toList)
   }
 
   def app(id: AbsolutePathId): RestResult[ITAppDefinition] = {
@@ -481,7 +480,7 @@ class MarathonFacade(
 
   def launchQueueForAppId(appId: AbsolutePathId): RestResult[List[ITQueueItem]] = {
     val res = result(requestFor[ITLaunchQueue](Get(s"$url/v2/queue")), waitTime)
-    res.map(_.queue.iterator.filterAs(q => q.app.id.toPath == appId).toSeq)
+    res.map(_.queue.iterator.filter(q => q.app.id.toPath == appId).toList)
   }
 
   def launchQueueDelayReset(appId: AbsolutePathId): RestResult[HttpResponse] =
@@ -503,7 +502,7 @@ object MarathonFacade {
       case NonFatal(e) =>
         throw new RuntimeException(s"while parsing:\n${app.entityPrettyJsonString}", e)
     }
-  }.to[marathon.IndexedSeq]
+  }.to(IndexedSeq)
 
   /**
     * Enables easy access to a deployment ID in the header of an [[HttpResponse]] in a [[RestResult]].
