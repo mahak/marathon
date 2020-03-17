@@ -87,10 +87,9 @@ lazy val commonSettings = Seq(
     "-feature",
     "-unchecked",
     "-Xlint",
-    "-Yno-adapted-args",
     "-Yrangepos",
     "-Ywarn-numeric-widen",
-    "-Ywarn-unused:-locals,imports"
+    "-Ywarn-unused"
   ),
   // Don't need any linting, etc for docs, so gain a small amount of build time there.
   scalacOptions in (Compile, doc) := Seq("-encoding", "UTF-8", "-deprecation", "-feature", "-Xfuture"),
