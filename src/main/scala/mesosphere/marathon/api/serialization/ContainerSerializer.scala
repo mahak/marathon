@@ -99,7 +99,7 @@ object ContainerSerializer {
     container match {
       case _: Docker => ()
       case _ =>
-        networks.toIterator
+        networks.iterator
           .filter(_ != HostNetwork)
           .map { network =>
             val (networkName, networkLabels) = network match {

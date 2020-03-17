@@ -86,7 +86,6 @@ lazy val commonSettings = Seq(
     "-deprecation",
     "-feature",
     "-unchecked",
-    "-Xfuture",
     "-Xlint",
     "-Yno-adapted-args",
     "-Yrangepos",
@@ -98,13 +97,15 @@ lazy val commonSettings = Seq(
   javacOptions in Compile ++= Seq(
     "-encoding", "UTF-8", "-source", "1.8", "-target", "1.8", "-Xlint:unchecked", "-Xlint:deprecation"
   ),
-  resolvers ++= Seq(
-    Resolver.JCenterRepository,
-    "Typesafe Releases" at "https://repo.typesafe.com/typesafe/releases/",
-    "Apache Shapshots" at "https://repository.apache.org/content/repositories/snapshots/",
-    "Mesosphere Public Repo" at "https://downloads.mesosphere.com/maven",
-    "Mesosphere Snapshot Repo" at "https://downloads.mesosphere.com/maven-snapshot"
-  ),
+  resolvers := {
+    Seq(
+      "Mesosphere Snapshot Repo" at "https://downloads.mesosphere.com/maven-snapshot",
+      "Mesosphere Public Repo" at "https://downloads.mesosphere.com/maven",
+      "Typesafe Releases" at "https://repo.typesafe.com/typesafe/releases/",
+      "Apache Shapshots" at "https://repository.apache.org/content/repositories/snapshots/",
+      Resolver.JCenterRepository
+    ) ++ resolvers.value
+  },
   cancelable in Global := true,
   publishTo := Some(s3resolver.value(
     "Mesosphere Public Repo (S3)",
@@ -210,7 +211,9 @@ lazy val `mesos-simulation` = (project in file("mesos-simulation"))
   .settings(testSettings : _*)
   .settings(commonSettings: _*)
   .settings(formatSettings: _*)
-  .dependsOn(marathon % "compile->compile; test->test")
+  .dependsOn(marathon % "test->test")
+  .dependsOn(marathon)
+  .dependsOn(integration % "test->test")
   .settings(
     name := "mesos-simulation"
   )

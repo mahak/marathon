@@ -86,12 +86,10 @@ object Dependencies {
     // test
     Test.diffson % "test",
     Test.scalatest % "test",
-    Test.scalatestMockito % "test",
-    Test.scalatestScalacheck % "test",
     Test.mockito % "test",
     Test.akkaTestKit % "test",
+    Test.akkaStreamTestKit % "test",
     Test.akkaHttpTestKit % "test",
-    Test.junit % "test",
     Test.scalacheck % "test",
     Test.usiTestUtils % "test"
   ) ++ Curator.all
@@ -143,7 +141,7 @@ object Dependency {
     val ServletApi = "2.5"
     val Slf4j = "1.7.21"
     val UUIDGenerator = "3.1.4"
-    val WixAccord = "0.7.5"
+    val WixAccord = "0.7.6"
 
     // Version of Mesos to use when building docker image or testing packages
     val MesosDebian = "1.9.0-2.0.1"
@@ -151,13 +149,10 @@ object Dependency {
 
     // test deps versions
     val JMH = "1.19"
-    val JUnit = "4.12"
     val JUnitBenchmarks = "0.7.2"
     val Mockito = "1.10.19"
-    val ScalaTest = "3.1.1"
-    val ScalaTestMockito = "3.1.0.0"
-    val ScalaTestScalaCheck = "3.1.1.1"
-    val UsiTestUtil = "0.1.33-745d9bb-SNAPSHOT"
+    val ScalaTest = "3.0.8"
+    val UsiTestUtil = "0.1.35-2f42537-SNAPSHOT"
   }
 
   val excludeMortbayJetty = ExclusionRule(organization = "org.mortbay.jetty")
@@ -264,13 +259,11 @@ object Dependency {
   object Test {
     val jmh = "org.openjdk.jmh" % "jmh-generator-annprocess" % V.JMH
     val scalatest = "org.scalatest" %% "scalatest" % V.ScalaTest
-    val scalatestMockito = "org.scalatestplus" %% "mockito-1-10" % V.ScalaTestMockito
-    val scalatestScalacheck = "org.scalatestplus" %% "scalacheck-1-14" % V.ScalaTestScalaCheck
     val mockito = "org.mockito" % "mockito-all" % V.Mockito
     val akkaTestKit = "com.typesafe.akka" %% "akka-testkit" % V.Akka
+    val akkaStreamTestKit = "com.typesafe.akka" %% "akka-stream-testkit" % V.Akka
     val akkaHttpTestKit = "com.typesafe.akka" %% "akka-http-testkit" % V.AkkaHttp
     val diffson = "org.gnieh" %% "diffson-play-json" % V.Diffson
-    val junit = "junit" % "junit" % V.JUnit
     val scalacheck = "org.scalacheck" %% "scalacheck" % V.ScalaCheck
     val usiTestUtils = ("com.mesosphere.usi" %% "test-utils" % V.UsiTestUtil).excludeAll(excludeZk35)
   }

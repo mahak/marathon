@@ -6,8 +6,7 @@ import diffson.jsonpatch.{Add, Copy, Operation}
 import diffson.lcs.Patience
 import diffson.playJson._
 import mesosphere.marathon.raml.RamlSerializer
-import org.scalatest.Assertions
-import org.scalatest.matchers.should.Matchers
+import org.scalatest.{Assertions, Matchers}
 import play.api.libs.json._
 
 import scala.collection.Map

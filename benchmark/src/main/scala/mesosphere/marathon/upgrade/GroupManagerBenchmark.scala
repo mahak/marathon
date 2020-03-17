@@ -56,9 +56,9 @@ class GroupBenchmark {
   var numberOfGroups: Int = _
   lazy val groupIds = 0 until numberOfGroups
 
-  lazy val childGroupPaths: Vector[AbsolutePathId] = groupIds.map { groupId =>
+  lazy val childGroupPaths: Vector[AbsolutePathId] = groupIds.iterator.map { groupId =>
     AbsolutePathId(s"/group-$groupId")
-  }(breakOut)
+  }.toVector
 
   lazy val rootGroup: RootGroup = fillRootGroup()
 

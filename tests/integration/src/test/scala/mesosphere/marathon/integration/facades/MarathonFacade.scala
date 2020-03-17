@@ -20,7 +20,6 @@ import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 import com.mesosphere.utils.http.RestResult
 import com.typesafe.scalalogging.StrictLogging
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport
-import mesosphere.marathon
 import mesosphere.marathon.api.RestResource
 import mesosphere.marathon.core.pod.PodDefinition
 import mesosphere.marathon.integration.raml18.PodStatus18
