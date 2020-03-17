@@ -176,7 +176,7 @@ lazy val marathon = (project in file("."))
       import sys.process._
       ("./version" !!).trim
     },
-    unmanagedResourceDirectories in Compile += file("docs/docs/rest-api"),
+    unmanagedResourceDirectories in Compile += baseDirectory.value / "docs" / "docs" /  "rest-api",
     libraryDependencies ++= Dependencies.marathon,
     sourceGenerators in Compile += (ramlGenerate in Compile).taskValue,
     mainClass in Compile := Some("mesosphere.marathon.Main"),
